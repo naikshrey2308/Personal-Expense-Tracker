@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:personal_expense_tracker/userAuth/signup/signin_page.dart';
 import "./userAuth/login/loginPage.dart";
 import 'package:firebase_core/firebase_core.dart';
 
@@ -8,9 +9,11 @@ Future main() async {
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: '/',
+    initialRoute: '/register'
+        '',
     routes: {
-      "/": (context) => LoginPage(),
+      "/login": (context) => LoginPage(),
+      "/register": (context) => SigninPage(),
     },
     theme: ThemeData(
       primarySwatch: MaterialColor(
