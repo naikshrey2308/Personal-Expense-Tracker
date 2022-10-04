@@ -9,8 +9,7 @@ Future main() async {
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: '/register'
-        '',
+    initialRoute: '/login',
     routes: {
       "/login": (context) => LoginPage(),
       "/register": (context) => SigninPage(),

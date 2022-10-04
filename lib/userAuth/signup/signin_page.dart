@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../authController.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
@@ -8,7 +9,9 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
-  String pwd = "";
+  String name = "";
+  String email = "";
+  String password = "";
   bool changeButton = false;
   final _formKey = GlobalKey<FormState>();
 
@@ -18,133 +21,232 @@ class _SigninPageState extends State<SigninPage> {
         r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
         r"{0,253}[a-zA-Z0-9])?)*$";
     RegExp regex = RegExp(pattern);
-    if (value == null ||
-        value.isEmpty ||
-        !regex.hasMatch(value) ||
-        !value.endsWith(".com"))
+    if (value == null || value.isEmpty || !regex.hasMatch(value))
       return 'Enter a valid email address';
     else
       return null;
   }
 
-//Make changes here, navigation changes, routes and stuff
-//   moveToHome(BuildContext context) async {
-//     if (_formKey.currentState!.validate()) {
-//       setState(() {
-//         changeButton = true;
-//       });
-//       await Future.delayed(Duration(milliseconds: 500));
-//       await Navigator.pushNamed(context, MyRoutes.homeRoute);
-//       setState(() {
-//         changeButton = false;
-//       });
-//     }
-//   }
+// Make changes here, navigation changes, routes and stuff
+  moveToHome(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      String? status = await createUser(name, email, password);
+      print(status);
+
+      setState(() {
+        changeButton = true;
+      });
+
+      await Future.delayed(Duration(milliseconds: 500));
+      // await Navigator.pushNamed(context, MyRoutes.homeRoute);
+      setState(() {
+        // changeButton = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Colors.white,
-      child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Image.asset(
-                //Make changes here, logo image
-                "assets/images/logos/main_logo_light.png",
-                fit: BoxFit.cover,
-                width: 300,
-                height: 250,
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32),
-                child: Column(
-                  children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "Enter full name",
-                        labelText: "Name",
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                // Image.asset(
+                //   //Make changes here, logo image
+                //   "assets/images/logos/main_logo_light.png",
+                //   fit: BoxFit.cover,
+                //   width: 300,
+                //   height: 250,
+                // ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 32),
+                  child: Column(
+                    children: [
+                      Container(
+                          padding: EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Name",
+                            // textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 18.0,
+                            ),
+                          )),
+                      SizedBox(height: 8.0),
+                      TextFormField(
+                        onChanged: (val) {
+                          setState(() {
+                            name = val;
+                          });
+                        },
+                        decoration: InputDecoration(
+                            hintText: "John Doe",
+                            fillColor: Colors.grey[200],
+                            filled: true,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(15.0),
+                            )),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Name cannot be empty";
+                          }
+                          return null;
+                        },
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Name cannot be empty";
-                        }
-                        return null;
-                      },
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "Enter mail",
-                        labelText: "Email",
+
+                      SizedBox(
+                        height: 24.0,
                       ),
-                      validator: (value) {
-                        return validateEmail(value);
-                      },
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: "Enter password",
-                        labelText: "Password",
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Password cannot be empty";
-                        } else if (value.length < 6) {
-                          return "Length of password cannot be less than 6";
-                        }
-                        pwd = value;
-                        return null;
-                      },
-                    ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: "Confirm Password",
-                      ),
-                      validator: (value) {
-                        if (pwd != value) {
-                          return "Passwords don't match";
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    Material(
-                      borderRadius:
-                          BorderRadius.circular(changeButton ? 50 : 8),
-                      color: Colors.redAccent,
-                      child: InkWell(
-                        // onTap: () =>
-                        //     moveToHome(context), //Make changes here if required
-                        child: AnimatedContainer(
-                          duration: Duration(milliseconds: 500),
-                          width: changeButton ? 50 : 150,
-                          height: 50,
-                          alignment: Alignment.center,
-                          child: changeButton
-                              ? Icon(
-                                  Icons.done,
-                                  color: Colors.white,
-                                )
-                              : Text(
-                                  "Signup",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
+
+                      Container(
+                        padding: EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "Email",
+                          // textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 8.0),
+                      TextFormField(
+                        validator: (value) {
+                          return validateEmail(value);
+                        },
+                        onChanged: (val) {
+                          setState(() {
+                            email = val;
+                          });
+                        },
+                        decoration: InputDecoration(
+                            hintText: "xyz@abc.com",
+                            fillColor: Colors.grey[200],
+                            filled: true,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(15.0),
+                            )),
+                      ),
+
+                      SizedBox(
+                        height: 24.0,
+                      ),
+
+                      Container(
+                        padding: EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "Password",
+                          // textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 8.0),
+                      TextFormField(
+                          onChanged: (val) {
+                            setState(() {
+                              password = val;
+                            });
+                          },
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              hintText: "",
+                              fillColor: Colors.grey[200],
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(15.0),
+                              )),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Password cannot be empty";
+                            } else if (value.length < 6) {
+                              return "Length of password cannot be less than 6";
+                            }
+                            return null;
+                          }),
+                      SizedBox(
+                        height: 24.0,
+                      ),
+
+                      Container(
+                        padding: EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "Confirm Password",
+                          // textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 8.0),
+                      TextFormField(
+                        onChanged: (val) {
+                          setState(() {
+                            name = val;
+                          });
+                        },
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            hintText: "",
+                            fillColor: Colors.grey[200],
+                            filled: true,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.circular(15.0),
+                            )),
+                        validator: (value) {
+                          if (password != value) {
+                            return "Passwords don't match";
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(
+                        height: 48.0,
+                      ),
+                      Material(
+                        borderRadius:
+                            BorderRadius.circular(changeButton ? 50 : 50),
+                        color: changeButton ? Colors.green : Colors.redAccent,
+                        child: InkWell(
+                          onTap: () => moveToHome(
+                              context), //Make changes here if required
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 500),
+                            width: changeButton ? 50 : 150,
+                            height: 50,
+                            alignment: Alignment.center,
+                            child: changeButton
+                                ? Icon(
+                                    Icons.done,
+                                    color: Colors.white,
+                                  )
+                                : Text(
+                                    "Signup",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
