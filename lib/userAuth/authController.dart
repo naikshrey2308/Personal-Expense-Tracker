@@ -14,8 +14,13 @@ Future<String?> signIn(String email, String password) async {
 
 Future<String?> createUser(String name, String email, String password) async {
   try {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+
+    signIn(email, password);
+
     CollectionReference users = FirebaseFirestore.instance.collection("users");
-    users.add({
+    await users.add({
+      'id': FirebaseAuth.instance.currentUser!.uid,
       'name': name,
       'email': email,
       'password': password,

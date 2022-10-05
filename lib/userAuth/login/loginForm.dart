@@ -23,7 +23,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16.0, 50.0, 16.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 0.0),
       child: Form(
         key: _formkey,
         child: Column(
@@ -36,7 +36,7 @@ class _LoginFormState extends State<LoginForm> {
                 "Email",
                 textAlign: TextAlign.start,
                 style: TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 16.0,
                 ),
               ),
             ),
@@ -63,7 +63,7 @@ class _LoginFormState extends State<LoginForm> {
                 "Password",
                 textAlign: TextAlign.start,
                 style: TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 16.0,
                 ),
               ),
             ),
@@ -114,7 +114,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ),
-            SizedBox(height: 36.0),
+            SizedBox(height: 24.0),
             Center(
               child: Material(
                 borderRadius: BorderRadius.circular(changeButton ? 50 : 50),
@@ -135,8 +135,8 @@ class _LoginFormState extends State<LoginForm> {
                   },
                   child: AnimatedContainer(
                     duration: Duration(milliseconds: 300),
-                    width: changeButton ? 50 : 250,
-                    height: 50,
+                    width: changeButton ? 55 : 350,
+                    height: 55,
                     alignment: Alignment.center,
                     child:
                     changeButton ?
@@ -144,42 +144,43 @@ class _LoginFormState extends State<LoginForm> {
                     Text("Login",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 24.0),
+            SizedBox(height: 16.0),
             Container(
               alignment: Alignment.center,
               child: Text(
                 "OR",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 14.0,
                   fontWeight: FontWeight.w600,
                   color: Colors.grey[600],
                 ),
               ),
             ),
-            SizedBox(height: 24.0),
+            SizedBox(height: 16.0),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).pushNamed("/register");
+                Navigator.of(context).popAndPushNamed("/register");
               },
               child: Container(
                 alignment: Alignment.center,
                 child: Text(
                   "New here? Sign up and start saving.",
                   style: TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 16.0,
                     color: Colors.blue
                   ),
                 ),
               ),
-            )
+            ),
+            SizedBox(height: 24.0,)
             // Center(
             //   child: Padding(
             //     padding: EdgeInsets.fromLTRB(50, 0, 50, 0),

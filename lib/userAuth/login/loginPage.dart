@@ -23,14 +23,14 @@ class LoginPage extends StatelessWidget {
                       Text(
                         "Hello \nThere",
                         style: TextStyle(
-                          fontSize: 73,
+                          fontSize: 60,
                           letterSpacing: 2.5,
                         ),
                       ),
                       Text(
                         "\n.",
                         style: TextStyle(
-                          fontSize: 73,
+                          fontSize: 60,
                           color: globals.primary,
                         ),
                       )
