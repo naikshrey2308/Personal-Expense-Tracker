@@ -1,16 +1,24 @@
 import "package:flutter/material.dart";
+import 'package:personal_expense_tracker/pages/intro.dart';
 import 'package:personal_expense_tracker/userAuth/signup/signin_page.dart';
 import "./userAuth/login/loginPage.dart";
 import 'package:firebase_core/firebase_core.dart';
+import "package:flutter/services.dart";
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: '/login',
+    initialRoute: '/',
     routes: {
+      "/": (context) => IntroScreen(),
       "/login": (context) => LoginPage(),
       "/register": (context) => SigninPage(),
     },
