@@ -1,7 +1,9 @@
 import "package:flutter/material.dart";
 import 'package:personal_expense_tracker/pages/intro.dart';
+import 'package:personal_expense_tracker/pages/home_page.dart';
+import 'package:personal_expense_tracker/userAuth/signup/newRegisterPage.dart';
 import 'package:personal_expense_tracker/userAuth/signup/signin_page.dart';
-import "./userAuth/login/loginPage.dart";
+import "./userAuth/login/newLoginPage.dart";
 import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/services.dart";
 
@@ -19,8 +21,9 @@ Future main() async {
     initialRoute: '/',
     routes: {
       "/": (context) => IntroScreen(),
+      "/myExpenses": (context) => HomePage(),
       "/login": (context) => LoginPage(),
-      "/register": (context) => SigninPage(),
+      "/register": (context) => RegisterPage(),
     },
     theme: ThemeData(
       primarySwatch: MaterialColor(

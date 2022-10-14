@@ -14,11 +14,23 @@ class _IntroScreenState extends State<IntroScreen> {
   int minSlide = 0;
   int maxSlide = 3;
 
-  List<String> introTexts = [
-    "Finding it difficult to manage your daily expenses?",
-    "You've come to the right place. Expensee has got your back!",
-    "Just create an account. It's completely free.",
-    "And start saving! What are you waiting for? Create your account now!"
+  List<Map<String, String>> introTexts = [
+    {
+      "title": "Manage Money",
+      "content": "Finding it difficult to manage your daily expenses?"
+    },
+    {
+      "title": "About Expensee",
+      "content": "You've come to the right place. Expensee has got your back!"
+    },
+    {
+      "title": "Your Account", 
+      "content": "Just create an account. It's completely free."
+    },
+    {
+      "title": "Save Money",
+      "content": "And start saving! What are you waiting for? Create your account now!"
+    }
   ];
 
   @override
@@ -154,10 +166,23 @@ class _IntroScreenState extends State<IntroScreen> {
                 padding: EdgeInsets.fromLTRB(32, 0, 32, 0),
                 alignment: Alignment.center,
                 child: Text(
-                  introTexts[slide],
+                  introTexts[slide]["title"]!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(32, 0, 32, 0),
+                alignment: Alignment.center,
+                child: Text(
+                  introTexts[slide]["content"]!,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16.0,
+                    color: Colors.grey[600],
                   ),
                 ),
               ),

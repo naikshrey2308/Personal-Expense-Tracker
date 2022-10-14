@@ -125,6 +125,13 @@ class _LoginFormState extends State<LoginForm> {
                     if(status == null) {
                       setState(() {
                         changeButton = true;
+                        Future.delayed(
+                          Duration(milliseconds: 500),
+                          () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).popAndPushNamed("/myExpenses");
+                          } 
+                        );
                       });
                     } else {
                       print(status);
