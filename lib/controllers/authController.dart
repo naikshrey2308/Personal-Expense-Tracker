@@ -80,14 +80,18 @@ Future<String?> getUserImage(String email) async {
   return null;
 }
 
-Future<String?> updateUser(String name, String email, String password, XFile? image, String oldPass, bool imageChanged) async {
+Future<String?> updateUser(String name, String email, String password,
+    XFile? image, String oldPass, bool imageChanged) async {
   try {
-    if(password != oldPass) {
+    if (password != oldPass) {
       String? oldEmail = FirebaseAuth.instance.currentUser!.email;
       await FirebaseAuth.instance.signOut();
-      await FirebaseAuth.instance.signInWithEmailAndPassword(email: oldEmail!, password: oldPass);
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: oldEmail!, password: oldPass);
 
-      await FirebaseAuth.instance.currentUser!.updatePassword(password).then((_) {
+      await FirebaseAuth.instance.currentUser!
+          .updatePassword(password)
+          .then((_) {
         print("Password changed!");
       }).catchError((err) {
         print("Password not changed! ${err}");
@@ -96,26 +100,29 @@ Future<String?> updateUser(String name, String email, String password, XFile? im
 
     CollectionReference users = FirebaseFirestore.instance.collection("users");
     QuerySnapshot<Object?> fetchedUser = await users
-      .where(
-        "email",
-        isEqualTo: email,
-      )
-    .get();
+        .where(
+          "email",
+          isEqualTo: email,
+        )
+        .get();
 
     print("Got user data");
 
     final details = fetchedUser.docs.first.data() as Map<String, dynamic>;
     print(fetchedUser.docs.first.id);
-    await users.doc(fetchedUser.docs.first.id).update({
-      'name': name,
-      'password': password,
-      'image': (!imageChanged) ? details["image"] : image!.name,
-    }).then((value) => print("Updated")).catchError((err) => print(err));
+    await users
+        .doc(fetchedUser.docs.first.id)
+        .update({
+          'name': name,
+          'password': password,
+          'image': (!imageChanged) ? details["image"] : image!.name,
+        })
+        .then((value) => print("Updated"))
+        .catchError((err) => print(err));
 
     print("Updated user data");
 
-    if(!imageChanged)
-      return null;
+    if (!imageChanged) return null;
 
     final StorageRef = FirebaseStorage.instance.ref();
     final usersRef = StorageRef.child("users/${email}");

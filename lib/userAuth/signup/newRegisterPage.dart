@@ -2,7 +2,7 @@ import 'dart:io';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import "../authController.dart";
+import '../../controllers/authController.dart';
 import 'package:personal_expense_tracker/widgets/register_subpage.dart';
 import 'package:personal_expense_tracker/globalVars.dart' as globals;
 

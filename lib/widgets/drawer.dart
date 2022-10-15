@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:personal_expense_tracker/globalVars.dart';
-import 'package:personal_expense_tracker/userAuth/authController.dart';
+import 'package:personal_expense_tracker/controllers/authController.dart';
 import '../models/user.dart' as Models;
 
 // ignore: must_be_immutable
@@ -106,11 +106,9 @@ class MyDrawer extends StatelessWidget {
                       Navigator.of(context).popAndPushNamed("/");
                     },
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size.fromHeight(50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100)
-                      )
-                    ),
+                        minimumSize: Size.fromHeight(50),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100))),
                     child: Text("Logout"),
                   ),
                 ),

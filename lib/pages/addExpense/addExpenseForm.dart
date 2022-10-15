@@ -1,10 +1,11 @@
 import 'dart:ui';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:personal_expense_tracker/controllers/expenseController.dart';
 import 'package:personal_expense_tracker/globalVars.dart' as globals;
 
 class AddExpenseForm extends StatefulWidget {
-  const AddExpenseForm({super.key});
+  AddExpenseForm({super.key});
 
   @override
   State<AddExpenseForm> createState() => _AddExpenseFormState();
@@ -16,6 +17,9 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
   String password = "";
   String currTime = DateFormat("HH:mm").format(DateTime.now());
   String currDate = DateFormat("dd/MM/yyyy").format(DateTime.now());
+
+  List<String> transactionType = <String>["Expense", "Income"];
+  static String selectedType = "Income";
 
   List<String> categories = <String>[
     "Other",
@@ -113,7 +117,7 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
                               },
                               onChanged: (val) {
                                 setState(() {
-                                  transactionName = val;
+                                  transactionAmount = val;
                                 });
                               },
                               decoration: InputDecoration(
@@ -206,6 +210,28 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
                                 Column(
                                   children: [
                                     Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 18, 0, 10),
+                                    ),
+                                    DropdownButton<String>(
+                                        underline: SizedBox(),
+                                        value: selectedType,
+                                        items: List.generate(
+                                            transactionType.length,
+                                            (index) => DropdownMenuItem(
+                                                value: transactionType[index],
+                                                child: Text(
+                                                    transactionType[index]))),
+                                        onChanged: ((value) {
+                                          setState(() {
+                                            selectedType = value!;
+                                          });
+                                        })),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    Container(
                                       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                                       child: Text(
                                         "Date",
@@ -216,7 +242,7 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 150,
+                                      width: 110,
                                       child: TextField(
                                         onChanged: (val) {
                                           setState(() {
@@ -255,7 +281,7 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 150,
+                                      width: 110,
                                       child: TextField(
                                         onChanged: (val) {
                                           setState(() {
@@ -297,8 +323,10 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print("hey there");
+        onPressed: () async {
+          await createExpense(transactionName, transactionAmount,
+              selectedCategory, selectedMode, currDate, currTime, selectedType);
+          Navigator.of(context).pop();
         },
         backgroundColor: globals.primary,
         child: Icon(Icons.add),
