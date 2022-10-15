@@ -42,12 +42,13 @@ class _IntroScreenState extends State<IntroScreen> {
       "content": "You've come to the right place. Expensee has got your back!"
     },
     {
-      "title": "Your Account", 
+      "title": "Your Account",
       "content": "Just create an account. It's completely free."
     },
     {
       "title": "Save Money",
-      "content": "And start saving! What are you waiting for? Create your account now!"
+      "content":
+          "And start saving! What are you waiting for? Create your account now!"
     }
   ];
 

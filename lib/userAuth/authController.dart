@@ -7,17 +7,18 @@ import 'package:image_picker/image_picker.dart';
 
 Future<String?> signIn(String email, String password) async {
   try {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
     return null;
-  }
-  on FirebaseAuthException catch(err) {
+  } on FirebaseAuthException catch (err) {
     return "${err.message}";
   }
 }
 
 Future<String?> createUser(String name, String email, String password, XFile? image) async {
   try {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
 
     signIn(email, password);
 
@@ -34,8 +35,7 @@ Future<String?> createUser(String name, String email, String password, XFile? im
     final usersRef = StorageRef.child("users/${image!.name}");
     await usersRef.putFile(File(image.path));
     return null;
-  }
-  on FirebaseException catch(err) {
+  } on FirebaseException catch (err) {
     return "${err.message}";
   }
 }

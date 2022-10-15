@@ -2,11 +2,8 @@ import 'dart:io';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:personal_expense_tracker/userAuth/authController.dart';
-import 'package:personal_expense_tracker/widgets/form_fields.dart';
-import 'package:personal_expense_tracker/widgets/indicators.dart';
+import "../authController.dart";
 import 'package:personal_expense_tracker/widgets/register_subpage.dart';
-import "./newRegisterForm.dart";
 import 'package:personal_expense_tracker/globalVars.dart' as globals;
 
 class RegisterPage extends StatefulWidget {
@@ -37,7 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
       3: false,
   };
 
-  Future pickImage() async {
+  Future<void> pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
@@ -138,22 +135,23 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-                
-                
-                (fieldTitles[slide]["icon"] == null) ? Container() : Container(
-                    height: globals.deviceHeight(context) * 0.35,
-                    alignment: Alignment.bottomCenter,
-                    decoration: BoxDecoration(),
-                    child: CircleAvatar(
-                      radius: 77,
-                      backgroundColor: Colors.grey[600],
-                      child: CircleAvatar(
-                        radius: 75,
-                        backgroundColor: Colors.white,
-                        child: fieldTitles[slide]["icon"],
-                      ),
-                    )),
-                
+
+                (fieldTitles[slide]["icon"] == null)
+                    ? Container()
+                    : Container(
+                        height: globals.deviceHeight(context) * 0.35,
+                        alignment: Alignment.bottomCenter,
+                        decoration: BoxDecoration(),
+                        child: CircleAvatar(
+                          radius: 77,
+                          backgroundColor: Colors.grey[600],
+                          child: CircleAvatar(
+                            radius: 75,
+                            backgroundColor: Colors.white,
+                            child: fieldTitles[slide]["icon"],
+                          ),
+                        )),
+
                 // Container(
                 //   height: globals.deviceHeight(context) * 0.44,
                 //   alignment: Alignment.bottomCenter,
@@ -163,7 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 //         Indicators(size: maxSlide - minSlide + 1, active: slide),
                 //   ),
                 // ),
-                
+
                 Container(
                   height: globals.deviceHeight(context) * 0.45,
                   alignment: Alignment.bottomCenter,
@@ -210,7 +208,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           )
                         : Container(),
-
                     (slide == 1)
                         ? RegisterSubpage(
                             onChanged: (value) {
@@ -218,7 +215,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 email = value;
                               });
                             },
-                            helperText: "Dear ${name.split(" ").first}, your email helps us to keep your data synced whenever you login.",
+                            helperText:
+                                "Dear ${name.split(" ").first}, your email helps us to keep your data synced whenever you login.",
                             hint: "johndoe@gmail.com",
                             value: email,
                             obscureText: false,
@@ -240,7 +238,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           )
                         : Container(),
-
                     (slide == 2)
                         ? RegisterSubpage(
                             onChanged: (value) {
@@ -265,7 +262,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           )
                         : Container(),
-
                     (slide == 3)
                         ? RegisterSubpage(
                             onChanged: (value) {
@@ -290,7 +286,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           )
                         : Container(),
-
                     (slide == 4)
                         ? GestureDetector(
                             onTap: () async {
@@ -311,28 +306,25 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           )
                         : Container(),
-
-                    SizedBox(height: 32,),
-
+                    SizedBox(
+                      height: 32,
+                    ),
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          if(slide == minSlide) {
-                            Navigator.of(context).pop();
-                          }
-                          else if(slide != minSlide) {
+                          if(slide != minSlide) {
                             slide --;
+                            enabled = true;
                           }
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        elevation: 0.25,
-                        minimumSize: Size.fromHeight(50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        )
-                      ),
+                          primary: Colors.white,
+                          elevation: 0.25,
+                          minimumSize: Size.fromHeight(50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100),
+                          )),
                       child: Text(
                         "Back",
                         style: TextStyle(
@@ -341,11 +333,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                     ),
-
                     SizedBox(
                       height: 16,
                     ),
-
                     ElevatedButton(
                       onPressed: () async {
                         if(slide == maxSlide) {
