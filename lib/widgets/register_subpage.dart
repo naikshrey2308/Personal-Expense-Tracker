@@ -66,7 +66,7 @@ class _RegisterSubpageState extends State<RegisterSubpage> {
             ),
           ),
           SizedBox(
-            height: 16,
+            height: 32,
           ),
           ExpenseeTextField(
             onChanged: onChanged,
@@ -74,6 +74,7 @@ class _RegisterSubpageState extends State<RegisterSubpage> {
             icon: icon,
             validator: validator,
             value: value,
+            obscureText: obscureText,
           )
         ],
       ),

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.expensee.personal_expense_tracker">
    <application
-        android:label="personal_expense_tracker"
+        android:label="Expensee"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

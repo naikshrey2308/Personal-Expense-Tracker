@@ -43,6 +43,45 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  List<Map<String, dynamic>> fieldTitles = [
+    {
+      "title": "What's your name?",
+      "icon": Icon(
+        Icons.person,
+        size: 75,
+        color: Colors.black,
+      )
+    },
+    {
+      "title": "What's your email?",
+      "icon": Icon(
+        Icons.email,
+        size: 75,
+        color: Colors.black,
+      ),
+    },
+    {
+      "title": "Secure your account",
+      "icon": Icon(
+        Icons.lock,
+        size: 75,
+        color: Colors.black,
+      ),
+    },
+    {
+      "title": "Secure your account",
+      "icon": Icon(
+        Icons.verified,
+        size: 75,
+        color: Colors.black,
+      ),
+    },
+    {
+      "title": "You're Almost There!",
+      "icon": null,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,25 +95,10 @@ class _RegisterPageState extends State<RegisterPage> {
             Stack(
               children: [
                 Container(
-                  height: globals.deviceHeight(context) * 0.35,
+                  height: globals.deviceHeight(context) * 0.15,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: globals.primary,
-                  ),
-                ),
-                GestureDetector(
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(0, 80, 0, 48),
-                    alignment: Alignment.center,
-                    color: Colors.transparent,
-                    child: CircleAvatar(
-                      radius: 100,
-                      backgroundImage: (image == null)
-                          ? AssetImage(
-                              "assets/images/logos/logo_dark.png",
-                            )
-                          : Image(image: FileImage(image!)).image,
-                    ),
                   ),
                 ),
 
@@ -82,7 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
                  * Creates three waves with decreasing opacity
                  */
                 Container(
-                  height: globals.deviceHeight(context) * 0.45,
+                  height: globals.deviceHeight(context) * 0.25,
                   alignment: Alignment.bottomCenter,
                   child: Image(
                     image: AssetImage("assets/images/shapes/login-wave.png"),
@@ -91,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 Opacity(
                   opacity: 0.25,
                   child: Container(
-                    height: globals.deviceHeight(context) * 0.465,
+                    height: globals.deviceHeight(context) * 0.265,
                     alignment: Alignment.bottomCenter,
                     child: Image(
                       image: AssetImage("assets/images/shapes/login-wave.png"),
@@ -101,18 +125,44 @@ class _RegisterPageState extends State<RegisterPage> {
                 Opacity(
                   opacity: 0.1,
                   child: Container(
-                    height: globals.deviceHeight(context) * 0.48,
+                    height: globals.deviceHeight(context) * 0.28,
                     alignment: Alignment.bottomCenter,
                     child: Image(
                       image: AssetImage("assets/images/shapes/login-wave.png"),
                     ),
                   ),
                 ),
+                
+                
+                (fieldTitles[slide]["icon"] == null) ? Container() : Container(
+                    height: globals.deviceHeight(context) * 0.35,
+                    alignment: Alignment.bottomCenter,
+                    decoration: BoxDecoration(),
+                    child: CircleAvatar(
+                      radius: 77,
+                      backgroundColor: Colors.grey[600],
+                      child: CircleAvatar(
+                        radius: 75,
+                        backgroundColor: Colors.white,
+                        child: fieldTitles[slide]["icon"],
+                      ),
+                    )),
+                
+                // Container(
+                //   height: globals.deviceHeight(context) * 0.44,
+                //   alignment: Alignment.bottomCenter,
+                //   child: Padding(
+                //     padding: EdgeInsets.fromLTRB(56, 0, 56, 24),
+                //     child:
+                //         Indicators(size: maxSlide - minSlide + 1, active: slide),
+                //   ),
+                // ),
+                
                 Container(
-                  height: globals.deviceHeight(context) * 0.55,
+                  height: globals.deviceHeight(context) * 0.45,
                   alignment: Alignment.bottomCenter,
                   child: Text(
-                    "Welcome to Expensee!",
+                    fieldTitles[slide]["title"],
                     style: TextStyle(
                       fontSize: 24,
                       color: Colors.black,
@@ -137,13 +187,16 @@ class _RegisterPageState extends State<RegisterPage> {
                               });
                             },
                             value: name,
-                            helperText: "Tell us your name",
+                            helperText: "We would like to know your name.",
+                            obscureText: false,
                             hint: "John Doe",
                             icon: Icon(Icons.star),
                             validator: (value) {
+                              enabled = false;
                               if (value!.isEmpty) {
                                 return "Name cannot be empty.";
-                              } else if (!RegExp(r"^[a-zA-Z ]+$").hasMatch(value)) {
+                              } else if (!RegExp(r"^[a-zA-Z ]+$")
+                                  .hasMatch(value)) {
                                 return "Name contains invalid characters.";
                               } else {
                                 enabled = true;
@@ -153,22 +206,24 @@ class _RegisterPageState extends State<RegisterPage> {
                           )
                         : Container(),
 
-                      (slide == 1)
+                    (slide == 1)
                         ? RegisterSubpage(
                             onChanged: (value) {
                               setState(() {
-                                print(email);
                                 email = value;
                               });
                             },
-                            helperText: "${name}, what's your email?",
+                            helperText: "Dear ${name.split(" ").first}, your email helps us to keep your data synced whenever you login.",
                             hint: "johndoe@gmail.com",
+                            value: email,
+                            obscureText: false,
                             icon: Icon(Icons.email),
                             validator: (value) {
+                              enabled = false;
                               String pattern =
-                                r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-                                r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-                                r"{0,253}[a-zA-Z0-9])?)*$";
+                                  r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                                  r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                                  r"{0,253}[a-zA-Z0-9])?)*$";
                               if (value!.isEmpty) {
                                 return "Email cannot be empty.";
                               } else if (!RegExp(pattern).hasMatch(value)) {
@@ -181,17 +236,19 @@ class _RegisterPageState extends State<RegisterPage> {
                           )
                         : Container(),
 
-                      (slide == 2)
+                    (slide == 2)
                         ? RegisterSubpage(
                             onChanged: (value) {
                               setState(() {
                                 password = value;
                               });
                             },
-                            helperText: "${email}, choose a password.",
+                            helperText: "Choose a password for your account.",
                             obscureText: true,
+                            value: password,
                             icon: Icon(Icons.lock),
                             validator: (value) {
+                              enabled = false;
                               if (value!.isEmpty) {
                                 return "Password cannot be empty.";
                               } else if (value.length < 6) {
@@ -204,15 +261,16 @@ class _RegisterPageState extends State<RegisterPage> {
                           )
                         : Container(),
 
-                        (slide == 3)
+                    (slide == 3)
                         ? RegisterSubpage(
                             onChanged: (value) {
                               setState(() {
                                 cpasword = value;
                               });
                             },
-                            helperText: "Confirm your password",
+                            helperText: "Retype your password.",
                             obscureText: true,
+                            value: cpasword,
                             icon: Icon(Icons.lock),
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -227,31 +285,28 @@ class _RegisterPageState extends State<RegisterPage> {
                           )
                         : Container(),
 
-                        (slide == 4)
+                    (slide == 4)
                         ? GestureDetector(
-                          onTap: () async {
-                            await this.pickImage();
-                          },
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(0, 16, 0, 48),
-                            alignment: Alignment.center,
-                            color: Colors.transparent,
-                            child: CircleAvatar(
-                              radius: 75,
-                              backgroundImage: (image == null)
-                                  ? AssetImage(
-                                      "assets/images/logos/logo_dark.png",
-                                    )
-                                  : Image(image: FileImage(image!)).image,
+                            onTap: () async {
+                              await this.pickImage();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(0, 16, 0, 48),
+                              alignment: Alignment.center,
+                              color: Colors.transparent,
+                              child: CircleAvatar(
+                                radius: 75,
+                                backgroundImage: (image == null)
+                                    ? AssetImage(
+                                        "assets/images/logos/logo_dark.png",
+                                      )
+                                    : Image(image: FileImage(image!)).image,
+                              ),
                             ),
-                          ),
-                        )
+                          )
                         : Container(),
 
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(56, 0, 56, 24),
-                      child: Indicators(size: maxSlide - minSlide + 1, active: slide),
-                    ),
+                    SizedBox(height: 32,),
 
                     ElevatedButton(
                       onPressed: () {
@@ -271,31 +326,32 @@ class _RegisterPageState extends State<RegisterPage> {
                         )
                       ),
                       child: Text(
-                        "Wait, Go Back!",
+                        "Back",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           color: Colors.black,
                         ),
                       ),
                     ),
 
-                    SizedBox(height: 8,),
+                    SizedBox(
+                      height: 16,
+                    ),
 
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          if(slide != maxSlide && enabled == true) {
-                            slide ++;
+                          if (slide != maxSlide && enabled == true) {
+                            slide++;
                             enabled = false;
                           }
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size.fromHeight(50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        )
-                      ),
+                          minimumSize: Size.fromHeight(50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100),
+                          )),
                       child: Text(
                         "Continue",
                         style: TextStyle(
