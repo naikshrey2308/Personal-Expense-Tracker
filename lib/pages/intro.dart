@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import "../globalVars.dart" as globals;
 import "../widgets/indicators.dart";
@@ -223,11 +222,10 @@ class _IntroScreenState extends State<IntroScreen> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          if(slide == maxSlide) {
+                          if (slide == maxSlide) {
                             Navigator.of(context).pushNamed("/login");
-                          }
-                          else {
-                            slide ++;
+                          } else {
+                            slide++;
                           }
                         });
                       },
