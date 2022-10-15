@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:personal_expense_tracker/widgets/drawer.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,11 +11,42 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // const HomePage({super.key});
+  String selectedCurrency = "INR";
+  List<String> values = <String>[
+    'INR',
+    'USD',
+    'CAN',
+    'EUR',
+  ];
+
+  Map<String, String> mymap = {'INR': 'Rs', 'USD': '\$'};
+
   TextEditingController dateInput = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MyDrawer(),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+        actions: [
+          DropdownButton<String>(
+              underline: SizedBox(),
+              value: selectedCurrency,
+              items: List.generate(
+                  values.length,
+                  (index) => DropdownMenuItem(
+                      value: values[index], child: Text(values[index]))),
+              onChanged: ((value) {
+                setState(() {
+                  selectedCurrency = value!;
+                  print(value);
+                });
+              }))
+        ],
+      ),
       body: SafeArea(
         child: Container(
           color: Colors.white,
@@ -29,7 +61,7 @@ class _HomePageState extends State<HomePage> {
             Container(
               padding: EdgeInsets.fromLTRB(0, 20, 0, 30),
               child: Text(
-                "Rs 0.00",
+                "$selectedCurrency 0.00",
                 textScaleFactor: 2,
                 style: TextStyle(color: Colors.grey),
               ),

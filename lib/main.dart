@@ -18,7 +18,7 @@ Future main() async {
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: '/',
+    initialRoute: '/myExpenses',
     routes: {
       "/": (context) => IntroScreen(),
       "/myExpenses": (context) => HomePage(),
