@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
+import 'package:personal_expense_tracker/pages/addExpense/addExpensePage.dart';
 import 'package:personal_expense_tracker/pages/intro.dart';
 import 'package:personal_expense_tracker/pages/home_page.dart';
 import 'package:personal_expense_tracker/userAuth/signup/newRegisterPage.dart';
@@ -7,6 +8,7 @@ import 'package:personal_expense_tracker/userAuth/signup/newRegisterPage.dart';
 import "./userAuth/login/newLoginPage.dart";
 import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/services.dart";
+import 'package:personal_expense_tracker/pages/addExpense/addExpensePage.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +29,7 @@ Future main() async {
       "/myExpenses": (context) => HomePage(),
       "/login": (context) => LoginPage(),
       "/register": (context) => RegisterPage(),
+      "/addExpense": (context) => AddExpense()
     },
     theme: ThemeData(
       primarySwatch: MaterialColor(0xffff5757, {

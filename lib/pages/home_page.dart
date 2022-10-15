@@ -31,14 +31,14 @@ class _HomePageState extends State<HomePage> {
 
   // const HomePage({super.key});
   String selectedCurrency = "INR";
+  bool ans = true;
+  late bool temp;
   List<String> values = <String>[
     'INR',
     'USD',
     'CAN',
     'EUR',
   ];
-
-  // Map<String, String> mymap = {'INR': 'Rs', 'USD': '\$'};
 
   TextEditingController dateInput = TextEditingController();
 
@@ -217,7 +217,9 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: null,
+              onPressed: () {
+                Navigator.of(context).pushNamed("/addExpense");
+              },
               backgroundColor: globals.primary,
               child: Icon(Icons.add),
             ),
