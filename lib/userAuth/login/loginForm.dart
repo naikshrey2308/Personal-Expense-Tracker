@@ -48,13 +48,12 @@ class _LoginFormState extends State<LoginForm> {
                 });
               },
               decoration: InputDecoration(
-                fillColor: Colors.grey[200],
-                filled: true,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(15.0),
-                )
-              ),
+                  fillColor: Colors.grey[200],
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(15.0),
+                  )),
             ),
             SizedBox(height: 24.0),
             Container(
@@ -81,8 +80,7 @@ class _LoginFormState extends State<LoginForm> {
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(15.0),
-                  )
-              ),
+                  )),
             ),
             SizedBox(height: 16.0),
             // ElevatedButton(
@@ -122,16 +120,13 @@ class _LoginFormState extends State<LoginForm> {
                 child: InkWell(
                   onTap: () async {
                     String? status = await signIn(email, password);
-                    if(status == null) {
+                    if (status == null) {
                       setState(() {
                         changeButton = true;
-                        Future.delayed(
-                          Duration(milliseconds: 500),
-                          () {
-                            Navigator.of(context).pop();
-                            Navigator.of(context).popAndPushNamed("/myExpenses");
-                          } 
-                        );
+                        Future.delayed(Duration(milliseconds: 500), () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).popAndPushNamed("/myExpenses");
+                        });
                       });
                     } else {
                       print(status);
@@ -145,15 +140,15 @@ class _LoginFormState extends State<LoginForm> {
                     width: changeButton ? 55 : 350,
                     height: 55,
                     alignment: Alignment.center,
-                    child:
-                    changeButton ?
-                    Icon(Icons.done, color: Colors.white) :
-                    Text("Login",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                      ),
-                    ),
+                    child: changeButton
+                        ? Icon(Icons.done, color: Colors.white)
+                        : Text(
+                            "Login",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                            ),
+                          ),
                   ),
                 ),
               ),
@@ -180,14 +175,13 @@ class _LoginFormState extends State<LoginForm> {
                 alignment: Alignment.center,
                 child: Text(
                   "New here? Sign up and start saving.",
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.blue
-                  ),
+                  style: TextStyle(fontSize: 16.0, color: Colors.blue),
                 ),
               ),
             ),
-            SizedBox(height: 24.0,)
+            SizedBox(
+              height: 24.0,
+            )
             // Center(
             //   child: Padding(
             //     padding: EdgeInsets.fromLTRB(50, 0, 50, 0),

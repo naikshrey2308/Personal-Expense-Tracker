@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ExpenseeTextField extends StatefulWidget {
   bool obscureText = false;
   void Function(String)? onChanged;
@@ -9,7 +10,13 @@ class ExpenseeTextField extends StatefulWidget {
   String? value = '';
 
   ExpenseeTextField(
-      {Key? key, this.obscureText = false, required this.onChanged, this.hint, this.icon, this.validator, this.value})
+      {Key? key,
+      this.obscureText = false,
+      required this.onChanged,
+      this.hint,
+      this.icon,
+      this.validator,
+      this.value})
       : super(key: key);
 
   @override
