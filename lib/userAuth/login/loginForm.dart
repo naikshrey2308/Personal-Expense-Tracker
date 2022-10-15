@@ -1,11 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../authController.dart';
 
 class LoginForm extends StatefulWidget {
   LoginForm({Key? key}) : super(key: key);
-
-  final _auth = FirebaseAuth.instance;
 
   @override
   State<LoginForm> createState() => _LoginFormState();
