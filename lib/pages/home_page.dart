@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:personal_expense_tracker/models/user.dart' as Models;
 import 'package:personal_expense_tracker/userAuth/authController.dart';
 import 'package:personal_expense_tracker/widgets/drawer.dart';
+import 'package:personal_expense_tracker/globalVars.dart' as globals;
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   @override
   initState() {
     super.initState();
-    if(FirebaseAuth.instance.currentUser == null) {
+    if (FirebaseAuth.instance.currentUser == null) {
       Navigator.of(context).pop();
     }
   }
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> {
     'EUR',
   ];
 
-  Map<String, String> mymap = {'INR': 'Rs', 'USD': '\$'};
+  // Map<String, String> mymap = {'INR': 'Rs', 'USD': '\$'};
 
   TextEditingController dateInput = TextEditingController();
 
@@ -215,12 +216,17 @@ class _HomePageState extends State<HomePage> {
                 ]),
               ),
             ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: null,
+              backgroundColor: globals.primary,
+              child: Icon(Icons.add),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
           );
         } else {
           return Scaffold(
-            body: Center(
-              child: CircularProgressIndicator()
-            ),
+            body: Center(child: CircularProgressIndicator()),
           );
         }
       },

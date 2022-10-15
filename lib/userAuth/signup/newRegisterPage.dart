@@ -28,10 +28,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool enabled = false;
   Map<int, bool> enabledList = {
-      0: false,
-      1: false,
-      2: false,
-      3: false,
+    0: false,
+    1: false,
+    2: false,
+    3: false,
   };
 
   Future<void> pickImage() async {
@@ -301,7 +301,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ? AssetImage(
                                         "assets/images/logos/logo_dark.png",
                                       )
-                                    : Image(image: FileImage(File(image!.path))).image,
+                                    : Image(image: FileImage(File(image!.path)))
+                                        .image,
                               ),
                             ),
                           )
@@ -312,14 +313,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          if(slide != minSlide) {
-                            slide --;
+                          if (slide != minSlide) {
+                            slide--;
                             enabled = true;
                           }
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
+                          backgroundColor: Colors.white,
                           elevation: 0.25,
                           minimumSize: Size.fromHeight(50),
                           shape: RoundedRectangleBorder(
@@ -338,12 +339,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        if(slide == maxSlide) {
-                            String? status = await createUser(name, email, password, image);
-                            if(status == null) {
-                              Navigator.of(context).popAndPushNamed("/myExpenses");
-                            }
-                            return null;
+                        if (slide == maxSlide) {
+                          String? status =
+                              await createUser(name, email, password, image);
+                          if (status == null) {
+                            Navigator.of(context)
+                                .popAndPushNamed("/myExpenses");
+                          }
+                          return null;
                         }
                         setState(() {
                           if (slide != maxSlide && enabledList[slide] == true) {

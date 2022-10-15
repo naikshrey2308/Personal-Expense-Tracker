@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../userAuth/authController.dart';
 
 class User {
   String id;

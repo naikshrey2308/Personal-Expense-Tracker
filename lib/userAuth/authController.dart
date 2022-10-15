@@ -2,7 +2,6 @@ import 'dart:io';
 import "package:firebase_storage/firebase_storage.dart";
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:image_picker/image_picker.dart';
 
 Future<String?> signIn(String email, String password) async {
@@ -15,7 +14,8 @@ Future<String?> signIn(String email, String password) async {
   }
 }
 
-Future<String?> createUser(String name, String email, String password, XFile? image) async {
+Future<String?> createUser(
+    String name, String email, String password, XFile? image) async {
   try {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
@@ -43,20 +43,20 @@ Future<String?> createUser(String name, String email, String password, XFile? im
 Future<Object?> getUser(String email) async {
   try {
     final user = FirebaseAuth.instance.currentUser;
-    if(user == null)
-      return null;
+    if (user == null) return null;
 
     CollectionReference users = FirebaseFirestore.instance.collection("users");
-    QuerySnapshot<Object?> fetchedUser = await users.where(
-      "email", isEqualTo: email,
-    ).get();
+    QuerySnapshot<Object?> fetchedUser = await users
+        .where(
+          "email",
+          isEqualTo: email,
+        )
+        .get();
 
     return fetchedUser.docs.first.data();
-  }
-  on FirebaseException catch(err) {
+  } on FirebaseException catch (err) {
     print("${err.code}: ${err.message}");
-  }
-  on Exception catch(err) {
+  } on Exception catch (err) {
     print("${err}");
   }
 
@@ -66,17 +66,14 @@ Future<Object?> getUser(String email) async {
 Future<String?> getUserImage(String email) async {
   try {
     final user = FirebaseAuth.instance.currentUser;
-    if(user == null)
-      return null;
+    if (user == null) return null;
 
     final StorageRef = FirebaseStorage.instance.ref();
     final usersRef = StorageRef.child("users/${email}");
     return usersRef.getDownloadURL();
-  }
-  on FirebaseException catch(err) {
+  } on FirebaseException catch (err) {
     print("${err.code}: ${err.message}");
-  }
-  on Exception catch(err) {
+  } on Exception catch (err) {
     print("${err}");
   }
 
