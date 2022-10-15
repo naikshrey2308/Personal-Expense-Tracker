@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:personal_expense_tracker/widgets/drawer.dart';
+import 'package:personal_expense_tracker/globalVars.dart' as globals;
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     'EUR',
   ];
 
-  Map<String, String> mymap = {'INR': 'Rs', 'USD': '\$'};
+  // Map<String, String> mymap = {'INR': 'Rs', 'USD': '\$'};
 
   TextEditingController dateInput = TextEditingController();
 
@@ -192,6 +193,12 @@ class _HomePageState extends State<HomePage> {
           ]),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: null,
+        backgroundColor: globals.primary,
+        child: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
