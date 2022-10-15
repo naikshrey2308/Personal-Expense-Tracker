@@ -24,12 +24,13 @@ class _IntroScreenState extends State<IntroScreen> {
       "content": "You've come to the right place. Expensee has got your back!"
     },
     {
-      "title": "Your Account", 
+      "title": "Your Account",
       "content": "Just create an account. It's completely free."
     },
     {
       "title": "Save Money",
-      "content": "And start saving! What are you waiting for? Create your account now!"
+      "content":
+          "And start saving! What are you waiting for? Create your account now!"
     }
   ];
 
@@ -102,7 +103,7 @@ class _IntroScreenState extends State<IntroScreen> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: globals.primary,
+                        backgroundColor: globals.primary,
                         elevation: 0,
                         padding: EdgeInsets.fromLTRB(32, 16, 32, 16),
                         shape: RoundedRectangleBorder(
@@ -132,7 +133,7 @@ class _IntroScreenState extends State<IntroScreen> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey[100],
+                        backgroundColor: Colors.grey[100],
                         elevation: 0,
                         padding: EdgeInsets.fromLTRB(56, 16, 56, 16),
                         shape: RoundedRectangleBorder(
@@ -205,7 +206,7 @@ class _IntroScreenState extends State<IntroScreen> {
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                          primary: Colors.transparent,
+                          backgroundColor: Colors.transparent,
                           padding: EdgeInsets.fromLTRB(24, 12, 24, 12),
                           elevation: 0,
                           shape: RoundedRectangleBorder(
@@ -221,18 +222,17 @@ class _IntroScreenState extends State<IntroScreen> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          if(slide == maxSlide) {
+                          if (slide == maxSlide) {
                             Navigator.of(context).popAndPushNamed("/login");
-                          }
-                          else {
-                            slide ++;
+                          } else {
+                            slide++;
                           }
                         });
                       },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.fromLTRB(24, 12, 24, 12),
                           elevation: 0,
-                          primary: Colors.transparent,
+                          backgroundColor: Colors.transparent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(100),
                           )),

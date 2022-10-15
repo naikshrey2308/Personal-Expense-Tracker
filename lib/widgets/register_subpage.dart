@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "../widgets/form_fields.dart";
 
+// ignore: must_be_immutable
 class RegisterSubpage extends StatefulWidget {
   void Function(String)? onChanged;
   String? Function(String?)? validator;
@@ -23,14 +24,14 @@ class RegisterSubpage extends StatefulWidget {
 
   @override
   State<RegisterSubpage> createState() => _RegisterSubpageState(
-    onChanged: onChanged,
-    helperText: helperText,
-    obscureText: obscureText,
-    hint: hint,
-    icon: icon,
-    validator: validator,
-    value: value,
-  );
+        onChanged: onChanged,
+        helperText: helperText,
+        obscureText: obscureText,
+        hint: hint,
+        icon: icon,
+        validator: validator,
+        value: value,
+      );
 }
 
 class _RegisterSubpageState extends State<RegisterSubpage> {
