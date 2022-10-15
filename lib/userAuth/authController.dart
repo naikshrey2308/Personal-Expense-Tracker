@@ -32,10 +32,53 @@ Future<String?> createUser(String name, String email, String password, XFile? im
     });
 
     final StorageRef = FirebaseStorage.instance.ref();
-    final usersRef = StorageRef.child("users/${image!.name}");
+    final usersRef = StorageRef.child("users/${email}");
     await usersRef.putFile(File(image.path));
     return null;
   } on FirebaseException catch (err) {
     return "${err.message}";
   }
+}
+
+Future<Object?> getUser(String email) async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null)
+      return null;
+
+    CollectionReference users = FirebaseFirestore.instance.collection("users");
+    QuerySnapshot<Object?> fetchedUser = await users.where(
+      "email", isEqualTo: email,
+    ).get();
+
+    return fetchedUser.docs.first.data();
+  }
+  on FirebaseException catch(err) {
+    print("${err.code}: ${err.message}");
+  }
+  on Exception catch(err) {
+    print("${err}");
+  }
+
+  return null;
+}
+
+Future<String?> getUserImage(String email) async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null)
+      return null;
+
+    final StorageRef = FirebaseStorage.instance.ref();
+    final usersRef = StorageRef.child("users/${email}");
+    return usersRef.getDownloadURL();
+  }
+  on FirebaseException catch(err) {
+    print("${err.code}: ${err.message}");
+  }
+  on Exception catch(err) {
+    print("${err}");
+  }
+
+  return null;
 }

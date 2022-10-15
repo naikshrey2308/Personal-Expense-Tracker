@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import 'package:personal_expense_tracker/pages/intro.dart';
 import 'package:personal_expense_tracker/pages/home_page.dart';
@@ -16,9 +17,11 @@ Future main() async {
     DeviceOrientation.portraitDown,
   ]);
 
+  final user = FirebaseAuth.instance.currentUser;
+
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: '/myExpenses',
+    initialRoute: (user == null) ? "/" : "/myExpenses",
     routes: {
       "/": (context) => IntroScreen(),
       "/myExpenses": (context) => HomePage(),

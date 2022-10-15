@@ -15,23 +15,6 @@ class _IntroScreenState extends State<IntroScreen> {
   int minSlide = 0;
   int maxSlide = 3;
 
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, 
-    () {
-      onRefresh(FirebaseAuth.instance.currentUser);
-    });
-  }
-
-  onRefresh(user) {
-    if(user == null) {
-      return;
-    } else {
-      Navigator.of(context).pushNamed("/myExpenses");
-    }
-  }
-
   List<Map<String, String>> introTexts = [
     {
       "title": "Manage Money",

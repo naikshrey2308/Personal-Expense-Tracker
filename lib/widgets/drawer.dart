@@ -1,14 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:personal_expense_tracker/userAuth/authController.dart';
+import '../models/user.dart' as Models;
 
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({super.key});
+  Models.User? user;
+  String imageUrl = '';
+  
+  MyDrawer({super.key, this.user});
+
+  getImage() async {
+    imageUrl = await getUserImage(user!.email) ?? '';
+    print(imageUrl);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl =
-        "https://media-exp1.licdn.com/dms/image/C4D03AQFVusXo_vh-Xg/profile-displayphoto-shrink_200_200/0/1641293765284?e=2147483647&v=beta&t=01b9e9OXf3VBPJcvbaq2Hpsl9-2gTanR5QLtDQOus8k";
-    return Drawer(
+    return FutureBuilder(
+      future: getImage(),
+      builder: (context, snapshot) {
+        return Drawer(
       backgroundColor: Colors.white,
       child: Container(
         // color: Colors.deepPurple,
@@ -23,13 +35,13 @@ class MyDrawer extends StatelessWidget {
                     decoration: BoxDecoration(color: Colors.white),
                     margin: EdgeInsets.zero,
                     accountName: Text(
-                      "Krish Makadia",
+                      "",
                       style: TextStyle(color: Colors.black),
                     ),
-                    accountEmail: Text("makadiakrish@gmail.com",
+                    accountEmail: Text(user!.email,
                         style: TextStyle(color: Colors.black)),
                     currentAccountPicture: CircleAvatar(
-                      backgroundImage: NetworkImage(imageUrl),
+                      backgroundImage: NetworkImage((imageUrl == '') ? 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg' : imageUrl),
                     ),
                   )),
             ),
@@ -75,9 +87,18 @@ class MyDrawer extends StatelessWidget {
                 ),
               ),
             ),
+            ElevatedButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).popAndPushNamed("/");
+              }, 
+              child: Text("Logout"),
+            ),
           ],
         ),
       ),
+    );
+      },
     );
   }
 }
