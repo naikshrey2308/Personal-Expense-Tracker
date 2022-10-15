@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import "../globalVars.dart" as globals;
 import "../widgets/indicators.dart";
@@ -13,6 +14,23 @@ class _IntroScreenState extends State<IntroScreen> {
   int slide = -1;
   int minSlide = 0;
   int maxSlide = 3;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, 
+    () {
+      onRefresh(FirebaseAuth.instance.currentUser);
+    });
+  }
+
+  onRefresh(user) {
+    if(user == null) {
+      return;
+    } else {
+      Navigator.of(context).pushNamed("/myExpenses");
+    }
+  }
 
   List<Map<String, String>> introTexts = [
     {
@@ -222,7 +240,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       onPressed: () {
                         setState(() {
                           if(slide == maxSlide) {
-                            Navigator.of(context).popAndPushNamed("/login");
+                            Navigator.of(context).pushNamed("/login");
                           }
                           else {
                             slide ++;
