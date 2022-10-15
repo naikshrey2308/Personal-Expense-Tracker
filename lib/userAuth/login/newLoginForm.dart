@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:personal_expense_tracker/widgets/form_fields.dart';
-import "../authController.dart";
+import '../../controllers/authController.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);

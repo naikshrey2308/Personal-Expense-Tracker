@@ -9,36 +9,18 @@ class AddExpense extends StatefulWidget {
 }
 
 class _AddExpenseState extends State<AddExpense> {
-  List<String> transactionType = <String>["Expense", "Income"];
-  String selectedValue = "Income";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.black),
-          backgroundColor: Colors.white,
-          elevation: 0.5,
-          title: Text(
-            "Add Transaction",
-            style: TextStyle(color: Colors.black),
-          ),
-          actions: [
-            DropdownButton<String>(
-                underline: SizedBox(),
-                value: selectedValue,
-                items: List.generate(
-                    transactionType.length,
-                    (index) => DropdownMenuItem(
-                        value: transactionType[index],
-                        child: Text(transactionType[index]))),
-                onChanged: ((value) {
-                  setState(() {
-                    selectedValue = value!;
-                    print(value);
-                  });
-                }))
-          ]),
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+        title: Text(
+          "Add Transaction",
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
       body: AddExpenseForm(),
     );
   }

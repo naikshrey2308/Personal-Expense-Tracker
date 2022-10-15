@@ -2,8 +2,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:personal_expense_tracker/controllers/expenseController.dart';
 import 'package:personal_expense_tracker/models/user.dart' as Models;
-import 'package:personal_expense_tracker/userAuth/authController.dart';
+import 'package:personal_expense_tracker/controllers/authController.dart';
 import 'package:personal_expense_tracker/widgets/drawer.dart';
 import 'package:personal_expense_tracker/globalVars.dart' as globals;
 
@@ -27,6 +28,11 @@ class _HomePageState extends State<HomePage> {
     final docRef = await getUser(FirebaseAuth.instance.currentUser!.email!);
     final details = docRef as Map<String, dynamic>;
     user = Models.User.fromMap(details);
+    // print(DateFormat("dd/MM/yyyy").format(_dateTime).toString());
+    List<dynamic> expenses = await getExpense(
+            user!.email, DateFormat("dd/MM/yyyy").format(_dateTime).toString())
+        as List<dynamic>;
+    print(expenses[0].data());
   }
 
   // const HomePage({super.key});
@@ -210,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ]),
                             ),
-                          )
+                          ),
                         ],
                       )),
                 ]),

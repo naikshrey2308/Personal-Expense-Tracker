@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../authController.dart';
+import '../../controllers/authController.dart';
 
 class LoginForm extends StatefulWidget {
   LoginForm({Key? key}) : super(key: key);

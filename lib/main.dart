@@ -8,7 +8,6 @@ import 'package:personal_expense_tracker/userAuth/signup/profilePage.dart';
 import "./userAuth/login/newLoginPage.dart";
 import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/services.dart";
-import 'package:personal_expense_tracker/pages/addExpense/addExpensePage.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
