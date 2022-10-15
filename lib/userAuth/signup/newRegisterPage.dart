@@ -2,10 +2,8 @@ import 'dart:io';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'package:personal_expense_tracker/widgets/form_fields.dart';
-// import 'package:personal_expense_tracker/widgets/indicators.dart';
+import "../authController.dart";
 import 'package:personal_expense_tracker/widgets/register_subpage.dart';
-// import "./newRegisterForm.dart";
 import 'package:personal_expense_tracker/globalVars.dart' as globals;
 
 class RegisterPage extends StatefulWidget {
@@ -25,18 +23,23 @@ class _RegisterPageState extends State<RegisterPage> {
   String password = "";
   String cpasword = "";
   bool changeButton = false;
-  File? image;
+  XFile? image;
   final _formKey = GlobalKey<FormState>();
 
   bool enabled = false;
+  Map<int, bool> enabledList = {
+    0: false,
+    1: false,
+    2: false,
+    3: false,
+  };
 
-  Future pickImage() async {
+  Future<void> pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
-      final tempImg = File(image.path);
       setState(() {
-        this.image = tempImg;
+        this.image = image;
       });
     } on PlatformException catch (err) {
       print("Failed to pick image: $err");
@@ -73,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
       "icon": Icon(
         Icons.verified,
         size: 75,
-        color: Colors.black,
+        color: Colors.green,
       ),
     },
     {
@@ -183,7 +186,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         ? RegisterSubpage(
                             onChanged: (value) {
                               setState(() {
-                                print(name);
                                 name = value;
                               });
                             },
@@ -193,14 +195,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             hint: "John Doe",
                             icon: Icon(Icons.star),
                             validator: (value) {
-                              enabled = false;
+                              enabledList[0] = false;
                               if (value!.isEmpty) {
                                 return "Name cannot be empty.";
                               } else if (!RegExp(r"^[a-zA-Z ]+$")
                                   .hasMatch(value)) {
                                 return "Name contains invalid characters.";
                               } else {
-                                enabled = true;
+                                enabledList[0] = true;
                               }
                               return null;
                             },
@@ -220,7 +222,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             obscureText: false,
                             icon: Icon(Icons.email),
                             validator: (value) {
-                              enabled = false;
+                              enabledList[1] = false;
                               String pattern =
                                   r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
                                   r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
@@ -230,7 +232,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               } else if (!RegExp(pattern).hasMatch(value)) {
                                 return "Email contains invalid characters.";
                               } else {
-                                enabled = true;
+                                enabledList[1] = true;
                               }
                               return null;
                             },
@@ -248,13 +250,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             value: password,
                             icon: Icon(Icons.lock),
                             validator: (value) {
-                              enabled = false;
+                              enabledList[2] = false;
                               if (value!.isEmpty) {
                                 return "Password cannot be empty.";
                               } else if (value.length < 6) {
                                 return "Password should contain atleast 6 characters.";
                               } else {
-                                enabled = true;
+                                enabledList[2] = true;
                               }
                               return null;
                             },
@@ -272,12 +274,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             value: cpasword,
                             icon: Icon(Icons.lock),
                             validator: (value) {
+                              enabledList[3] = false;
                               if (value!.isEmpty) {
                                 return "Password cannot be empty.";
                               } else if (value != password) {
                                 return "Passwords don't match";
                               } else {
-                                enabled = true;
+                                enabledList[3] = true;
                               }
                               return null;
                             },
@@ -298,7 +301,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ? AssetImage(
                                         "assets/images/logos/logo_dark.png",
                                       )
-                                    : Image(image: FileImage(image!)).image,
+                                    : Image(image: FileImage(File(image!.path)))
+                                        .image,
                               ),
                             ),
                           )
@@ -334,11 +338,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       height: 16,
                     ),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        if (slide == maxSlide) {
+                          String? status =
+                              await createUser(name, email, password, image);
+                          if (status == null) {
+                            Navigator.of(context)
+                                .popAndPushNamed("/myExpenses");
+                          }
+                          return null;
+                        }
                         setState(() {
-                          if (slide != maxSlide && enabled == true) {
+                          if (slide != maxSlide && enabledList[slide] == true) {
                             slide++;
-                            enabled = false;
                           }
                         });
                       },
@@ -348,7 +360,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             borderRadius: BorderRadius.circular(100),
                           )),
                       child: Text(
-                        "Continue",
+                        (slide == maxSlide) ? "Create My Account" : "Continue",
                         style: TextStyle(
                           fontSize: 18,
                         ),

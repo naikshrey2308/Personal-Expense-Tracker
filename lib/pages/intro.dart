@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import "../globalVars.dart" as globals;
 import "../widgets/indicators.dart";
@@ -103,7 +104,7 @@ class _IntroScreenState extends State<IntroScreen> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: globals.primary,
+                        primary: globals.primary,
                         elevation: 0,
                         padding: EdgeInsets.fromLTRB(32, 16, 32, 16),
                         shape: RoundedRectangleBorder(
@@ -133,7 +134,7 @@ class _IntroScreenState extends State<IntroScreen> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[100],
+                        primary: Colors.grey[100],
                         elevation: 0,
                         padding: EdgeInsets.fromLTRB(56, 16, 56, 16),
                         shape: RoundedRectangleBorder(
@@ -206,7 +207,7 @@ class _IntroScreenState extends State<IntroScreen> {
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
+                          primary: Colors.transparent,
                           padding: EdgeInsets.fromLTRB(24, 12, 24, 12),
                           elevation: 0,
                           shape: RoundedRectangleBorder(
@@ -222,17 +223,18 @@ class _IntroScreenState extends State<IntroScreen> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          if (slide == maxSlide) {
-                            Navigator.of(context).popAndPushNamed("/login");
-                          } else {
-                            slide++;
+                          if(slide == maxSlide) {
+                            Navigator.of(context).pushNamed("/login");
+                          }
+                          else {
+                            slide ++;
                           }
                         });
                       },
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.fromLTRB(24, 12, 24, 12),
                           elevation: 0,
-                          backgroundColor: Colors.transparent,
+                          primary: Colors.transparent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(100),
                           )),
