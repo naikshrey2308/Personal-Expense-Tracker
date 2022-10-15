@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import 'package:personal_expense_tracker/pages/intro.dart';
 import 'package:personal_expense_tracker/pages/home_page.dart';
 import 'package:personal_expense_tracker/userAuth/signup/newRegisterPage.dart';
-// import 'package:personal_expense_tracker/userAuth/signup/signin_page.dart';
+import 'package:personal_expense_tracker/userAuth/signup/profilePage.dart';
 import "./userAuth/login/newLoginPage.dart";
 import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/services.dart";
@@ -27,6 +27,7 @@ Future main() async {
       "/myExpenses": (context) => HomePage(),
       "/login": (context) => LoginPage(),
       "/register": (context) => RegisterPage(),
+      "/profile": (context) => ProfilePage(),
     },
     theme: ThemeData(
       primarySwatch: MaterialColor(0xffff5757, {

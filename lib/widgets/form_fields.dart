@@ -8,6 +8,7 @@ class ExpenseeTextField extends StatefulWidget {
   String? hint = '';
   Icon? icon;
   String? value = '';
+  bool readonly = false;
 
   ExpenseeTextField(
       {Key? key,
@@ -16,7 +17,8 @@ class ExpenseeTextField extends StatefulWidget {
       this.hint,
       this.icon,
       this.validator,
-      this.value})
+      this.value,
+      this.readonly = false})
       : super(key: key);
 
   @override
@@ -27,6 +29,7 @@ class ExpenseeTextField extends StatefulWidget {
         icon: icon,
         validator: validator,
         value: value,
+        readonly: readonly,
       );
 }
 
@@ -37,6 +40,7 @@ class _ExpenseeTextFieldState extends State<ExpenseeTextField> {
   String? hint = '';
   Icon? icon;
   String? value = '';
+  bool readonly;
 
   _ExpenseeTextFieldState({
     required this.obscureText,
@@ -45,6 +49,7 @@ class _ExpenseeTextFieldState extends State<ExpenseeTextField> {
     this.icon,
     this.validator,
     this.value,
+    required this.readonly,
   });
 
   @override
@@ -55,6 +60,7 @@ class _ExpenseeTextFieldState extends State<ExpenseeTextField> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: validator,
       initialValue: value,
+      readOnly: readonly,
       decoration: InputDecoration(
           fillColor: Colors.grey[200],
           hintText: hint,
