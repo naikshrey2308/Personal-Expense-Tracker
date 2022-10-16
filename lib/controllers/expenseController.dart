@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 Future<String?> createExpense(
     String transactionName,
@@ -43,7 +44,47 @@ Future<Object?> getExpense(String email, String currDate) async {
         .orderBy("currTime", descending: true)
         .get();
 
-    return fetchedExpenses.docs.map((e) => {"id": e.id, ...e.data() as Map}).toList();
+    return fetchedExpenses.docs
+        .map((e) => {"id": e.id, ...e.data() as Map})
+        .toList();
+  } on FirebaseException catch (err) {
+    print("${err.code}: ${err.message}");
+  } on Exception catch (err) {
+    print("${err}");
+  }
+
+  return null;
+}
+
+Future<Object?> customExpense(
+    String email, String currDate, String currTime) async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return null;
+
+    DateTime today = DateTime.parse(currDate);
+    DateTime aWeekBefore = today.subtract(const Duration(days: 7));
+    print("Today : " + "$today");
+    print("A week before : " + "$aWeekBefore");
+
+    CollectionReference expenses =
+        FirebaseFirestore.instance.collection("expenses");
+    QuerySnapshot<Object?> fetchedExpenses = await expenses
+        .where(
+          "userEmail",
+          isEqualTo: user.email,
+        )
+        .where("currDate",
+            isLessThanOrEqualTo: DateFormat("dd/MM/yyyy").format(today))
+        .where("currDate",
+            isGreaterThanOrEqualTo:
+                DateFormat("dd/MM/yyyy").format(aWeekBefore))
+        .orderBy("currTime", descending: true)
+        .get();
+
+    return fetchedExpenses.docs
+        .map((e) => {"id": e.id, ...e.data() as Map})
+        .toList();
   } on FirebaseException catch (err) {
     print("${err.code}: ${err.message}");
   } on Exception catch (err) {
