@@ -43,7 +43,7 @@ Future<Object?> getExpense(String email, String currDate) async {
         .orderBy("currTime", descending: true)
         .get();
 
-    return fetchedExpenses.docs.toList();
+    return fetchedExpenses.docs.map((e) => {"id": e.id, ...e.data() as Map}).toList();
   } on FirebaseException catch (err) {
     print("${err.code}: ${err.message}");
   } on Exception catch (err) {
