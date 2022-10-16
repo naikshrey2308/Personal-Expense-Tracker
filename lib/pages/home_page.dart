@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:personal_expense_tracker/controllers/expenseController.dart';
@@ -19,6 +21,15 @@ class _HomePageState extends State<HomePage> {
 
   num totalIncome = 0;
   num totalExpense = 0;
+
+  Map<String, dynamic> categories = {
+    "Other": (Icons.attach_money_rounded),
+    "Bills": (CupertinoIcons.doc),
+    "Clothes": (Icons.shopping_bag),
+    "Food": (Icons.local_pizza),
+    "Education": (Icons.book),
+    "Entertainment": (Icons.tv),
+  };
 
   @override
   initState() {
@@ -97,31 +108,85 @@ class _HomePageState extends State<HomePage> {
                     Stack(children: [
                       Container(
                         height: globals.deviceHeight(context) * 0.3,
+                        padding: EdgeInsets.all(16),
                         color: globals.primary,
-                      ),
-                      Container(
-                        height: globals.deviceHeight(context) * 0.28,
-                        alignment: Alignment.center,
-                        child: Text(
-                          "You " +
-                              ((totalExpense - totalIncome >= 0)
-                                  ? "Spent"
-                                  : "Gained"),
-                          style: TextStyle(
-                            color: Colors.white,
+                        child: LineChart(
+                          LineChartData(
+                            gridData: FlGridData(
+                              show: false,
+                            ),
+                            maxX: 7,
+                            minX: 1,
+                            minY: 0,
+                            titlesData: FlTitlesData(
+                              show: false,
+                            ),
+                            borderData:  FlBorderData(
+                              show: true,
+                              border: Border(
+                                left: BorderSide.none,
+                                bottom: BorderSide(
+                                  color: Colors.white,
+                                ),
+                                top: BorderSide.none,
+                                right: BorderSide.none,
+                              )
+                            ),
+                            lineBarsData: [
+                              LineChartBarData(
+                                spots: [
+                                  FlSpot(1, 3),
+                                  FlSpot(2, 5),
+                                  FlSpot(3, 1),
+                                  FlSpot(4, 6),
+                                  FlSpot(5, 5),
+                                  FlSpot(6, 9),
+                                  FlSpot(7, 3),
+                                ],
+                                belowBarData: BarAreaData(
+                                  show: true,
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.white70,
+                                      Colors.white10,
+                                    ]
+                                  )
+                                ),
+                                color: Colors.white,
+                                dotData: FlDotData(
+                                  show: false,
+                                ),
+                                isCurved: true,
+                              )
+                            ]
                           ),
-                          textScaleFactor: 2.5,
-                        ),
+                        )
                       ),
-                      Container(
-                        height: globals.deviceHeight(context) * 0.22,
-                        alignment: Alignment.bottomCenter,
-                        child: Text(
-                          "$selectedCurrency ${(totalExpense - totalIncome).abs()}",
-                          textScaleFactor: 2,
-                          style: TextStyle(color: Colors.grey[350]),
-                        ),
-                      ),
+                      // Container(
+                      //   height: globals.deviceHeight(context) * 0.28,
+                      //   alignment: Alignment.center,
+                      //   child: Text(
+                      //     "You " +
+                      //         ((totalExpense - totalIncome >= 0)
+                      //             ? "Spent"
+                      //             : "Gained"),
+                      //     style: TextStyle(
+                      //       color: Colors.white,
+                      //     ),
+                      //     textScaleFactor: 2.5,
+                      //   ),
+                      // ),
+                      // Container(
+                      //   height: globals.deviceHeight(context) * 0.22,
+                      //   alignment: Alignment.bottomCenter,
+                      //   child: Text(
+                      //     "$selectedCurrency ${(totalExpense - totalIncome).abs()}",
+                      //     textScaleFactor: 2,
+                      //     style: TextStyle(color: Colors.grey[350]),
+                      //   ),
+                      // ),
                     ]),
                     SizedBox(
                       height: 20,
@@ -256,7 +321,7 @@ class _HomePageState extends State<HomePage> {
                                     leading: CircleAvatar(
                                         backgroundColor: Colors.white,
                                         child: Icon(
-                                          Icons.local_pizza,
+                                          categories[expenses[index]["category"]],
                                           color: (expenses[index]
                                                       ["transactionType"] ==
                                                   "Income")
@@ -301,6 +366,12 @@ class _HomePageState extends State<HomePage> {
                                               expenses[index]["currTime"],
                                         ),
                                         GestureDetector(
+                                          onTap: () async {
+                                            await deleteExpense(expenses[index]["id"]);
+                                            setState(() {
+                                              getCurrentUser();
+                                            });
+                                          },
                                           child: Icon(
                                             Icons.delete,
                                             color: Colors.grey[600],

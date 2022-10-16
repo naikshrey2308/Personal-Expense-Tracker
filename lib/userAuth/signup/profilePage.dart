@@ -25,6 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   bool imageChanged = false;
   bool modified = false;
+  bool buffering = false;
 
   final _key = GlobalKey<FormState>();
 
@@ -105,6 +106,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               onPressed: () async {
                                 if (this._key.currentState!.validate()) {
                                   _key.currentState!.save();
+                                  
+                                  setState(() {
+                                    buffering = true;
+                                  });
                                   await updateUser(
                                       user!.name,
                                       user!.email,
@@ -112,13 +117,20 @@ class _ProfilePageState extends State<ProfilePage> {
                                       image,
                                       oldPass!,
                                       imageChanged);
-                                }
+                                  }
+                                  setState(() {
+                                    buffering = false;
+                                  });
+                                Navigator.of(context).pop();
+                                Navigator.of(context).popAndPushNamed("/myExpenses");
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.white,
                                 elevation: 0,
                               ),
-                              child: Icon(
+                              child: (buffering == true) ? 
+                                CircularProgressIndicator()
+                               : Icon(
                                 Icons.check,
                                 color: Colors.black,
                               ))

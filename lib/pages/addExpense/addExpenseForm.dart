@@ -344,6 +344,7 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
                 currTime,
                 selectedType);
             Navigator.of(context).pop();
+            Navigator.of(context).popAndPushNamed("/myExpenses");
           }
         },
         backgroundColor: globals.primary,
