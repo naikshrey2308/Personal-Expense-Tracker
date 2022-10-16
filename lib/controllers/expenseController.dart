@@ -56,13 +56,12 @@ Future<Object?> getExpense(String email, String currDate) async {
   return null;
 }
 
-Future<Object?> customExpense(
-    String email, String currDate, String currTime) async {
+Future<Object?> WeeklyExpensePlotter(String email, String currDate) async {
   try {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return null;
 
-    DateTime today = DateTime.parse(currDate);
+    DateTime today = DateFormat("dd/MM/yyyy").parse(currDate);
     DateTime aWeekBefore = today.subtract(const Duration(days: 7));
     print("Today : " + "$today");
     print("A week before : " + "$aWeekBefore");
@@ -75,16 +74,14 @@ Future<Object?> customExpense(
           isEqualTo: user.email,
         )
         .where("currDate",
-            isLessThanOrEqualTo: DateFormat("dd/MM/yyyy").format(today))
-        .where("currDate",
-            isGreaterThanOrEqualTo:
-                DateFormat("dd/MM/yyyy").format(aWeekBefore))
-        .orderBy("currTime", descending: true)
+          isLessThanOrEqualTo: DateFormat("dd/MM/yyyy").format(today),
+          isGreaterThanOrEqualTo: DateFormat("dd/MM/yyyy").format(aWeekBefore),
+        )
+        // .orderBy("currTime", descending: true)
         .get();
 
-    return fetchedExpenses.docs
-        .map((e) => {"id": e.id, ...e.data() as Map})
-        .toList();
+    return fetchedExpenses.docs.map((e) => e.data() as Map).toList();
+
   } on FirebaseException catch (err) {
     print("${err.code}: ${err.message}");
   } on Exception catch (err) {

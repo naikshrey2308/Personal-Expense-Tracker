@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
+import 'package:personal_expense_tracker/controllers/expenseController.dart';
 import 'package:personal_expense_tracker/pages/addExpense/addExpensePage.dart';
 import 'package:personal_expense_tracker/pages/intro.dart';
 import 'package:personal_expense_tracker/pages/home_page.dart';

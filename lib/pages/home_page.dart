@@ -22,6 +22,8 @@ class _HomePageState extends State<HomePage> {
   num totalIncome = 0;
   num totalExpense = 0;
 
+  List<double> plotters = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+
   Map<String, dynamic> categories = {
     "Other": (Icons.attach_money_rounded),
     "Bills": (CupertinoIcons.doc),
@@ -56,6 +58,21 @@ class _HomePageState extends State<HomePage> {
       } else {
         totalExpense += num.parse(expenses[index]["transactionAmount"]);
       }
+    }
+
+    // Graph initializer
+    var exps = await WeeklyExpensePlotter(user!.email, "${_dateTime.day}/${_dateTime.month}/${_dateTime.year}") as List;
+
+    plotters = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+
+    for(int i=0; i < exps.length; i++) {
+      var format = DateFormat("dd/MM/yyyy");
+      var date1 = format.parse("${_dateTime.day}/${_dateTime.month}/${_dateTime.year}");
+      var date2 = format.parse(exps[i]["currDate"]);
+      int x = date1.difference(date2).inDays.abs();
+
+      plotters[7 - x - 1] += ((exps[i]["transactionType"] == "Income") ? int.parse(exps[i]["transactionAmount"]) : -1 * int.parse(exps[i]["transactionAmount"]));
+
     }
   }
 
@@ -107,63 +124,58 @@ class _HomePageState extends State<HomePage> {
                   child: Column(children: [
                     Stack(children: [
                       Container(
-                        height: globals.deviceHeight(context) * 0.3,
-                        padding: EdgeInsets.all(16),
-                        color: globals.primary,
-                        child: LineChart(
-                          LineChartData(
-                            gridData: FlGridData(
-                              show: false,
-                            ),
-                            maxX: 7,
-                            minX: 1,
-                            minY: 0,
-                            titlesData: FlTitlesData(
-                              show: false,
-                            ),
-                            borderData:  FlBorderData(
-                              show: true,
-                              border: Border(
-                                left: BorderSide.none,
-                                bottom: BorderSide(
-                                  color: Colors.white,
-                                ),
-                                top: BorderSide.none,
-                                right: BorderSide.none,
-                              )
-                            ),
-                            lineBarsData: [
-                              LineChartBarData(
-                                spots: [
-                                  FlSpot(1, 3),
-                                  FlSpot(2, 5),
-                                  FlSpot(3, 1),
-                                  FlSpot(4, 6),
-                                  FlSpot(5, 5),
-                                  FlSpot(6, 9),
-                                  FlSpot(7, 3),
-                                ],
-                                belowBarData: BarAreaData(
-                                  show: true,
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Colors.white70,
-                                      Colors.white10,
-                                    ]
-                                  )
-                                ),
-                                color: Colors.white,
-                                dotData: FlDotData(
+                          height: globals.deviceHeight(context) * 0.3,
+                          padding: EdgeInsets.all(16),
+                          color: globals.primary,
+                          child: LineChart(
+                            LineChartData(
+                                gridData: FlGridData(
                                   show: false,
                                 ),
-                                isCurved: true,
-                              )
-                            ]
-                          ),
-                        )
-                      ),
+                                maxX: 7,
+                                minX: 1,
+                                titlesData: FlTitlesData(
+                                  show: false,
+                                ),
+                                borderData: FlBorderData(
+                                    show: true,
+                                    border: Border(
+                                      left: BorderSide.none,
+                                      bottom: BorderSide(
+                                        color: Colors.white,
+                                      ),
+                                      top: BorderSide.none,
+                                      right: BorderSide.none,
+                                    )),
+                                lineBarsData: [
+                                  LineChartBarData(
+                                    spots: [
+                                      FlSpot(1, plotters[0]),
+                                      FlSpot(2, plotters[1]),
+                                      FlSpot(3, plotters[2]),
+                                      FlSpot(4, plotters[3]),
+                                      FlSpot(5, plotters[4]),
+                                      FlSpot(6, plotters[5]),
+                                      FlSpot(7, plotters[6]),
+                                      FlSpot(8, plotters[7]),
+                                    ],
+                                    belowBarData: BarAreaData(
+                                        show: true,
+                                        gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              Colors.white70,
+                                              Colors.white10,
+                                            ])),
+                                    color: Colors.white,
+                                    dotData: FlDotData(
+                                      show: false,
+                                    ),
+                                    isCurved: true,
+                                  )
+                                ]),
+                          )),
                       // Container(
                       //   height: globals.deviceHeight(context) * 0.28,
                       //   alignment: Alignment.center,
@@ -195,7 +207,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                           child: Row(
                             // mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -207,7 +219,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
+                                padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -242,7 +254,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                                padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
                                 child: Container(
                                   child: Column(
                                     crossAxisAlignment:
@@ -270,12 +282,11 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     Container(
-                        padding: EdgeInsets.fromLTRB(15, 30, 0, 0),
+                        padding: EdgeInsets.fromLTRB(16, 32, 16, 0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                               child: Row(children: [
                                 IconButton(
                                   onPressed: _showDatePicker,
@@ -292,8 +303,30 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ]),
                             ),
+                            Container(
+                              padding: EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                // color: Colors.black12,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "Your ${(totalExpense > totalIncome) ? "Spendings" : "Earnings"}",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text("${selectedCurrency} ${(totalExpense - totalIncome).abs()}")
+                                ],
+                              ),
+                            ),
                           ],
                         )),
+                        Divider(
+                          thickness: 1,
+                        ),
                     Container(
                       color: Colors.white,
                       height: 500,
@@ -321,7 +354,8 @@ class _HomePageState extends State<HomePage> {
                                     leading: CircleAvatar(
                                         backgroundColor: Colors.white,
                                         child: Icon(
-                                          categories[expenses[index]["category"]],
+                                          categories[expenses[index]
+                                              ["category"]],
                                           color: (expenses[index]
                                                       ["transactionType"] ==
                                                   "Income")
@@ -367,7 +401,8 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         GestureDetector(
                                           onTap: () async {
-                                            await deleteExpense(expenses[index]["id"]);
+                                            await deleteExpense(
+                                                expenses[index]["id"]);
                                             setState(() {
                                               getCurrentUser();
                                             });
@@ -395,11 +430,10 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.of(context).pushNamed("/addExpense");
               },
-              backgroundColor: globals.primary,
+              
               child: Icon(Icons.add),
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
           );
         } else {
           return Scaffold(
