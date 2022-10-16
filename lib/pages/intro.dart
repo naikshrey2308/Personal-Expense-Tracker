@@ -2,6 +2,14 @@ import "package:flutter/material.dart";
 import "../globalVars.dart" as globals;
 import "../widgets/indicators.dart";
 
+
+/// This is the default screen loaded when user visits the app without Logging in.
+/// 
+/// [IntroScreen] renders a list of pages that describe the purpose of the application.
+/// Whenever a new user opens the app, by clicking on the ["GET STARTED"] button, this 
+/// component can be rendered. Basically, this is a list of hint or informative screens
+/// that guide the user to make the first steps by creating their account.
+/// 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({Key? key}) : super(key: key);
 
@@ -9,11 +17,18 @@ class IntroScreen extends StatefulWidget {
   State<IntroScreen> createState() => _IntroScreenState();
 }
 
+/// Provides the state to the [IntroScreen] widget.
 class _IntroScreenState extends State<IntroScreen> {
+
+  // keeps track of the current page
   int slide = -1;
+  // the minimum index of the page list
   int minSlide = 0;
+  // the maximum index of the page list
   int maxSlide = 3;
 
+// The slides are not actually moved. Just the new content is loaded and the old one is
+// replaced. This array has those list of states values.
   List<Map<String, String>> introTexts = [
     {
       "title": "Manage Money",
@@ -36,8 +51,16 @@ class _IntroScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    // If it is the first slide, it is the Welcome slide.
     if (slide == -1) {
       return Scaffold(
+
+        /// [Stack] is a widget provided by the Material Library in Flutter.
+        /// 
+        /// We can position the elements inside the stack on top of another.
+        /// That is, instead of using relative positioning to calculate their location,
+        /// widgets use the absolute positioning instead.
         body: Stack(
           children: [
             Container(
@@ -49,12 +72,22 @@ class _IntroScreenState extends State<IntroScreen> {
               ])),
             ),
             Container(
+
+              /// [deviceHeight] returns the height of the current viewport.
+              /// 
               height: globals.deviceHeight(context) * 0.8,
+              
+              /// [deviceWidth] returns the width of the current viewport.
+              /// 
               width: globals.deviceWidth(context),
+              
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(colors: [
                     Colors.red,
+
+                    /// globals module has some of the neccessary application scope properties.
+                    /// 
                     globals.primary,
                   ])),
               child: Column(
@@ -67,7 +100,9 @@ class _IntroScreenState extends State<IntroScreen> {
               height: globals.deviceHeight(context) * 0.9,
               width: globals.deviceWidth(context),
               decoration: BoxDecoration(
+                // makes a container in the shape of a filled circle
                 shape: BoxShape.circle,
+                // overlaying the first to create a multiple wave effect
                 color: Color(0x22ff5757),
               ),
             ),
@@ -83,6 +118,11 @@ class _IntroScreenState extends State<IntroScreen> {
                 ),
               ]),
             ),
+
+            /// [Positioned] element acts as a wrapper element for absolute measures.
+            /// 
+            /// Just like the [Container] is used as a wrapper in terms of relative positioning, 
+            /// the [Positioned] is a wrapper in terms of absolute positioning.
             Positioned(
               top: globals.deviceHeight(context) * 0.75,
               left: globals.deviceWidth(context) * 0.28,
@@ -92,6 +132,8 @@ class _IntroScreenState extends State<IntroScreen> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
+
+                          // once a user clicks on this button, the manual slideshow should begin.
                           slide = 0;
                         });
                       },

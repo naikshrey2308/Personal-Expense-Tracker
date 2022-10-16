@@ -2,10 +2,17 @@ import 'dart:io';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:personal_expense_tracker/userAuth/signup/registerForm.dart';
 import '../../controllers/authController.dart';
 import 'package:personal_expense_tracker/widgets/register_subpage.dart';
 import 'package:personal_expense_tracker/globalVars.dart' as globals;
 
+/// This provides a page to the users to create an account.
+///
+/// This page uses [RegisterForm] as a child component.
+/// [RegisterPage] gives the screen for the form to work.
+/// [RegisterForm] provides the interactive interface to the user to create an account.
+///
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
@@ -13,20 +20,33 @@ class RegisterPage extends StatefulWidget {
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
+/// Provides a state for the [RegisterPage] class.
 class _RegisterPageState extends State<RegisterPage> {
+  // The register form is to be loaded field-by-field in parts.
+  /// [slide] represents the current form-field that is rendered onto the screen.
   int slide = 0;
+  // The [maxSlide] represents the end of the form.
   int maxSlide = 4;
+  // The [minSlide] represents the start of the form.
   int minSlide = 0;
 
+  // User credentials that are to be stored into the database.
   String name = "";
   String email = "";
   String password = "";
   String cpasword = "";
+
   bool changeButton = false;
   XFile? image;
+
+  // Defines a universal form key that is used to uniquely identify a form instance throughout
+  // the application.
   final _formKey = GlobalKey<FormState>();
 
+  // [enabled] represents the correctness of the entire form.
   bool enabled = false;
+  // [enabledList] is a list of boolean variables that is used to assert the validity of each and
+  // every component.
   Map<int, bool> enabledList = {
     0: false,
     1: false,
@@ -34,18 +54,32 @@ class _RegisterPageState extends State<RegisterPage> {
     3: false,
   };
 
+  /// This allows users to select images from the gallery.
+  ///
+  /// [pickImage] function is implemented using the module:
+  /// ```dart
+  /// import 'package:image_picker/image_picker.dart';
+  /// ```
+  ///
+  /// It picks an image from the gallery and returns a [Future]
+  /// On error, it throws [PlatformException]
   Future<void> pickImage() async {
+    // Exceptions may occur if the user chooses to disallow access to gallery
     try {
+      // assigns the image object a reference of the image selected
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
       setState(() {
         this.image = image;
       });
-    } on PlatformException catch (err) {
+    }
+    // Handle the exceptions
+    on PlatformException catch (err) {
       print("Failed to pick image: $err");
     }
   }
 
+  // This contains the data to be rendered along with the form fields on each screen.
   List<Map<String, dynamic>> fieldTitles = [
     {
       "title": "What's your name?",
@@ -88,6 +122,8 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      // [SingleChildScrollView] allows scrolling of the page.
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -152,16 +188,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         )),
 
-                // Container(
-                //   height: globals.deviceHeight(context) * 0.44,
-                //   alignment: Alignment.bottomCenter,
-                //   child: Padding(
-                //     padding: EdgeInsets.fromLTRB(56, 0, 56, 24),
-                //     child:
-                //         Indicators(size: maxSlide - minSlide + 1, active: slide),
-                //   ),
-                // ),
-
                 Container(
                   height: globals.deviceHeight(context) * 0.45,
                   alignment: Alignment.bottomCenter,
@@ -182,6 +208,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 key: _formKey,
                 child: Column(
                   children: [
+
+                    // conditional rendering based on the current slide.
                     (slide == 0)
                         ? RegisterSubpage(
                             onChanged: (value) {
@@ -208,6 +236,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           )
                         : Container(),
+
                     (slide == 1)
                         ? RegisterSubpage(
                             onChanged: (value) {
@@ -238,6 +267,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           )
                         : Container(),
+
                     (slide == 2)
                         ? RegisterSubpage(
                             onChanged: (value) {
@@ -262,6 +292,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           )
                         : Container(),
+
                     (slide == 3)
                         ? RegisterSubpage(
                             onChanged: (value) {
@@ -286,7 +317,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             },
                           )
                         : Container(),
+
                     (slide == 4)
+                    /// [GestureDetector] detects the gestures made on the screen.
                         ? GestureDetector(
                             onTap: () async {
                               await this.pickImage();
@@ -297,6 +330,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: Colors.transparent,
                               child: CircleAvatar(
                                 radius: 75,
+
+                                // conditional rendering
+                                // if no image is selected, display default image
+                                // else display the selected image
                                 backgroundImage: (image == null)
                                     ? AssetImage(
                                         "assets/images/logos/logo_dark.png",

@@ -23,8 +23,13 @@ class _ProfilePageState extends State<ProfilePage> {
   String? imageUrl;
   String? oldPass;
 
-  bool imageChanged = false;
+  // Track whether image is updated or not.
+  bool imageChanged = false; 
+
+  // Track whether any field updated or not.
   bool modified = false;
+
+  // Checks if data is buffering or not.
   bool buffering = false;
 
   final _key = GlobalKey<FormState>();
