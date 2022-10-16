@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:personal_expense_tracker/controllers/expenseController.dart';
@@ -331,20 +332,22 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // if (enabled == false) return;
-          if (_formKey.currentState!.validate()) {
-            _formKey.currentState!.save();
-            await createExpense(
-                transactionName,
-                transactionAmount,
-                selectedCategory,
-                selectedMode,
-                currDate,
-                currTime,
-                selectedType);
-            Navigator.of(context).pop();
-          }
+        // onPressed: () async {
+        //   if (_formKey.currentState!.validate()) {
+        //     _formKey.currentState!.save();
+        //     await createExpense(
+        //         transactionName,
+        //         transactionAmount,
+        //         selectedCategory,
+        //         selectedMode,
+        //         currDate,
+        //         currTime,
+        //         selectedType);
+        //     Navigator.of(context).pop();
+
+        onPressed: () {
+          customExpense(
+              FirebaseAuth.instance.currentUser!.email!, currDate, currTime);
         },
         backgroundColor: globals.primary,
         child: Icon(Icons.add),
