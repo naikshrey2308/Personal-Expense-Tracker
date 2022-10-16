@@ -52,3 +52,15 @@ Future<Object?> getExpense(String email, String currDate) async {
 
   return null;
 }
+
+Future<String?> deleteExpense(String expenseId) async {
+  try {
+    final expense =
+        FirebaseFirestore.instance.collection('expenses').doc(expenseId);
+    expense.delete();
+  } on FirebaseException catch (err) {
+    print("${err.code}: ${err.message}");
+  } on Exception catch (err) {
+    print("${err}");
+  }
+}
