@@ -1,4 +1,3 @@
-// import 'dart:html';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -104,7 +103,6 @@ class _HomePageState extends State<HomePage> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                         child: Row(
-                          // mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             CircleAvatar(
                               backgroundColor: Colors.green[100],

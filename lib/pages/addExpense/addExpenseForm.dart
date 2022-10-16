@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:personal_expense_tracker/controllers/expenseController.dart';
 import 'package:personal_expense_tracker/globalVars.dart' as globals;
+import 'package:personal_expense_tracker/pages/addExpense/addExpensePage.dart';
 
 class AddExpenseForm extends StatefulWidget {
   AddExpenseForm({super.key});
@@ -17,6 +18,7 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
   String password = "";
   String currTime = DateFormat("HH:mm").format(DateTime.now());
   String currDate = DateFormat("dd/MM/yyyy").format(DateTime.now());
+  bool enabled = false;
 
   List<String> transactionType = <String>["Expense", "Income"];
   static String selectedType = "Income";
@@ -112,8 +114,13 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
                             TextFormField(
                               keyboardType: TextInputType.numberWithOptions(
                                   decimal: false),
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               validator: (value) {
-                                return "Amount cannot be empty";
+                                if (value!.isEmpty)
+                                  return "Amount cannot be empty";
+                                else
+                                  return null;
                               },
                               onChanged: (val) {
                                 setState(() {
@@ -246,7 +253,10 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
                                       child: TextField(
                                         onChanged: (val) {
                                           setState(() {
-                                            transactionName = val;
+                                            // transactionName = val;
+                                            currDate = DateFormat("dd/MM/yyyy")
+                                                .format(_dateTime)
+                                                .toString();
                                           });
                                         },
                                         readOnly: true,
@@ -255,8 +265,7 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
                                         },
                                         textAlign: TextAlign.center,
                                         decoration: InputDecoration(
-                                            hintText: DateFormat("dd/MM/yyyy")
-                                                .format(_dateTime),
+                                            hintText: currDate,
                                             fillColor: Colors.grey[200],
                                             filled: true,
                                             border: OutlineInputBorder(
@@ -274,7 +283,6 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
                                       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                                       child: Text(
                                         "Time",
-                                        // textAlign: TextAlign.start,
                                         style: TextStyle(
                                           fontSize: 16.0,
                                         ),
@@ -285,7 +293,7 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
                                       child: TextField(
                                         onChanged: (val) {
                                           setState(() {
-                                            transactionName = val;
+                                            currTime = _time.format(context);
                                           });
                                         },
                                         readOnly: true,
@@ -324,9 +332,19 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await createExpense(transactionName, transactionAmount,
-              selectedCategory, selectedMode, currDate, currTime, selectedType);
-          Navigator.of(context).pop();
+          // if (enabled == false) return;
+          if (_formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
+            await createExpense(
+                transactionName,
+                transactionAmount,
+                selectedCategory,
+                selectedMode,
+                currDate,
+                currTime,
+                selectedType);
+            Navigator.of(context).pop();
+          }
         },
         backgroundColor: globals.primary,
         child: Icon(Icons.add),
@@ -345,7 +363,7 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
             lastDate: DateTime.now())
         .then((value) {
       setState(() {
-        _dateTime = value!;
+        currDate = DateFormat("dd/MM/yyyy").format(value!);
       });
     });
   }
@@ -360,6 +378,7 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
     if (newTime != null) {
       setState(() {
         _time = newTime;
+        currTime = _time.format(context);
       });
     }
   }
