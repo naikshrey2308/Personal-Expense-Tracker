@@ -61,18 +61,21 @@ class _HomePageState extends State<HomePage> {
     }
 
     // Graph initializer
-    var exps = await WeeklyExpensePlotter(user!.email, "${_dateTime.day}/${_dateTime.month}/${_dateTime.year}") as List;
+    var exps = await WeeklyExpensePlotter(user!.email,
+        "${_dateTime.day}/${_dateTime.month}/${_dateTime.year}") as List;
 
     plotters = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 
-    for(int i=0; i < exps.length; i++) {
+    for (int i = 0; i < exps.length; i++) {
       var format = DateFormat("dd/MM/yyyy");
-      var date1 = format.parse("${_dateTime.day}/${_dateTime.month}/${_dateTime.year}");
+      var date1 =
+          format.parse("${_dateTime.day}/${_dateTime.month}/${_dateTime.year}");
       var date2 = format.parse(exps[i]["currDate"]);
       int x = date1.difference(date2).inDays.abs();
 
-      plotters[7 - x - 1] += ((exps[i]["transactionType"] == "Income") ? int.parse(exps[i]["transactionAmount"]) : -1 * int.parse(exps[i]["transactionAmount"]));
-
+      plotters[7 - x - 1] += ((exps[i]["transactionType"] == "Income")
+          ? int.parse(exps[i]["transactionAmount"])
+          : -1 * int.parse(exps[i]["transactionAmount"]));
     }
   }
 
@@ -176,29 +179,6 @@ class _HomePageState extends State<HomePage> {
                                   )
                                 ]),
                           )),
-                      // Container(
-                      //   height: globals.deviceHeight(context) * 0.28,
-                      //   alignment: Alignment.center,
-                      //   child: Text(
-                      //     "You " +
-                      //         ((totalExpense - totalIncome >= 0)
-                      //             ? "Spent"
-                      //             : "Gained"),
-                      //     style: TextStyle(
-                      //       color: Colors.white,
-                      //     ),
-                      //     textScaleFactor: 2.5,
-                      //   ),
-                      // ),
-                      // Container(
-                      //   height: globals.deviceHeight(context) * 0.22,
-                      //   alignment: Alignment.bottomCenter,
-                      //   child: Text(
-                      //     "$selectedCurrency ${(totalExpense - totalIncome).abs()}",
-                      //     textScaleFactor: 2,
-                      //     style: TextStyle(color: Colors.grey[350]),
-                      //   ),
-                      // ),
                     ]),
                     SizedBox(
                       height: 20,
@@ -209,7 +189,6 @@ class _HomePageState extends State<HomePage> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                           child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               CircleAvatar(
                                 backgroundColor: Colors.green[100],
@@ -254,7 +233,8 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+                                padding:
+                                    const EdgeInsets.fromLTRB(12, 0, 12, 0),
                                 child: Container(
                                   child: Column(
                                     crossAxisAlignment:
@@ -318,109 +298,124 @@ class _HomePageState extends State<HomePage> {
                                       fontSize: 16,
                                     ),
                                   ),
-                                  Text("${selectedCurrency} ${(totalExpense - totalIncome).abs()}")
+                                  Text(
+                                      "${selectedCurrency} ${(totalExpense - totalIncome).abs()}")
                                 ],
                               ),
                             ),
                           ],
                         )),
-                        Divider(
-                          thickness: 1,
-                        ),
+                    Divider(
+                      thickness: 1,
+                    ),
                     Container(
                       color: Colors.white,
                       height: 500,
                       padding: EdgeInsets.fromLTRB(16, 48, 16, 0),
                       width: globals.deviceWidth(context),
-                      child: ListView.builder(
-                        itemCount: expenses.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Container(
-                              padding: EdgeInsets.all(4.0),
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 0.2, color: Colors.grey),
-                                borderRadius: BorderRadius.circular(15),
-                                color: (expenses[index]["transactionType"] ==
-                                        "Income")
-                                    ? Colors.green[50]
-                                    : Colors.red[50],
-                              ),
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                    leading: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        child: Icon(
-                                          categories[expenses[index]
-                                              ["category"]],
-                                          color: (expenses[index]
-                                                      ["transactionType"] ==
-                                                  "Income")
-                                              ? Colors.green
-                                              : Colors.red,
-                                        )),
-                                    title: Text(
-                                      expenses[index]["transactionName"],
-                                    ),
-                                    subtitle: Text(expenses[index]["category"]),
-                                    trailing: Text(
-                                      ((expenses[index]["transactionType"] ==
-                                                  "Income")
-                                              ? "+ "
-                                              : "- ") +
-                                          expenses[index]["transactionAmount"],
-                                      style: TextStyle(
-                                        color: (expenses[index]
-                                                    ["transactionType"] ==
-                                                "Income")
-                                            ? Colors.green
-                                            : Colors.red,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 40,
-                                    padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                    alignment: Alignment.center,
-                                    width: globals.deviceWidth(context),
+                      child: expenses.length > 0
+                          ? ListView.builder(
+                              itemCount: expenses.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Container(
+                                    padding: EdgeInsets.all(4.0),
                                     decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      border: Border.all(
+                                          width: 0.2, color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: (expenses[index]
+                                                  ["transactionType"] ==
+                                              "Income")
+                                          ? Colors.green[50]
+                                          : Colors.red[50],
+                                    ),
+                                    child: Column(
                                       children: [
-                                        Text(
-                                          expenses[index]["currDate"] +
-                                              " " +
-                                              expenses[index]["currTime"],
-                                        ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            await deleteExpense(
-                                                expenses[index]["id"]);
-                                            setState(() {
-                                              getCurrentUser();
-                                            });
-                                          },
-                                          child: Icon(
-                                            Icons.delete,
-                                            color: Colors.grey[600],
+                                        ListTile(
+                                          leading: CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              child: Icon(
+                                                categories[expenses[index]
+                                                    ["category"]],
+                                                color: (expenses[index][
+                                                            "transactionType"] ==
+                                                        "Income")
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                              )),
+                                          title: Text(
+                                            expenses[index]["transactionName"],
                                           ),
-                                        )
+                                          subtitle:
+                                              Text(expenses[index]["category"]),
+                                          trailing: Text(
+                                            ((expenses[index][
+                                                            "transactionType"] ==
+                                                        "Income")
+                                                    ? "+ "
+                                                    : "- ") +
+                                                expenses[index]
+                                                    ["transactionAmount"],
+                                            style: TextStyle(
+                                              color: (expenses[index]
+                                                          ["transactionType"] ==
+                                                      "Income")
+                                                  ? Colors.green
+                                                  : Colors.red,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 40,
+                                          padding:
+                                              EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                          alignment: Alignment.center,
+                                          width: globals.deviceWidth(context),
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                expenses[index]["currDate"] +
+                                                    " " +
+                                                    expenses[index]["currTime"],
+                                              ),
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  await deleteExpense(
+                                                      expenses[index]["id"]);
+                                                  setState(() {
+                                                    getCurrentUser();
+                                                  });
+                                                },
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  color: Colors.grey[600],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
-                                ],
+                                );
+                              },
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                      'assets/images/intros/noItem.jpg'),
+                                ),
                               ),
                             ),
-                          );
-                        },
-                      ),
                     )
                   ]),
                 ),
@@ -430,7 +425,6 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.of(context).pushNamed("/addExpense");
               },
-              
               child: Icon(Icons.add),
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -451,7 +445,7 @@ class _HomePageState extends State<HomePage> {
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime(2000),
-            lastDate: DateTime(2030))
+            lastDate: DateTime.now())
         .then((value) {
       setState(() {
         _dateTime = value!;
